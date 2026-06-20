@@ -1,0 +1,35 @@
+---
+const links = [
+  { href: '#mission', label: 'Our Mission' },
+  { href: '#programs', label: 'Programmes' },
+  { href: '#rhythm', label: 'Weekly Rhythm' },
+  { href: '#visit', label: 'Visit' },
+  { href: '#give', label: 'Give Sadaqah' },
+];
+---
+
+<footer class="bg-maroon-dark text-cream/70">
+  <div class="mx-auto max-w-6xl px-6 py-14 sm:px-8">
+    <div class="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+      <div class="flex items-center gap-3">
+        <img src="/brand/emblem-light.png" alt="" aria-hidden="true" width="34" height="32" />
+        <span class="font-body text-[13.5px] leading-snug">
+          Al-Muhsinoon Islamic<br />Cultural Centre, Manchester
+        </span>
+      </div>
+
+      <ul class="flex flex-wrap gap-x-8 gap-y-3 font-body text-[14px]">
+        {links.map((link) => (
+          <li>
+            <a href={link.href} class="focus-ring transition-colors duration-200 hover:text-cream">{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="mt-12 flex flex-col gap-3 border-t border-cream/10 pt-6 font-body text-[12.5px] sm:flex-row sm:items-center sm:justify-between">
+      <p>© {new Date().getFullYear()} Al-Muhsinoon Islamic Cultural Centre. Registered charity in England &amp; Wales, No. 1210623.</p>
+      <p class="opacity-70">hello@al-muhsinoon.org · @Al_muhsinoon</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,13 @@
+---
+import Star from './Star.astro';
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<div class={`flex items-center justify-center gap-3 ${className}`} aria-hidden="true">
+  <span class="h-px w-16 bg-gold/40 sm:w-28"></span>
+  <Star class="h-2.5 w-2.5 text-gold" />
+  <span class="h-px w-16 bg-gold/40 sm:w-28"></span>
+</div>

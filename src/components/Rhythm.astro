@@ -1,0 +1,43 @@
+---
+import Star from './Star.astro';
+
+const week = [
+  { day: 'Mon', what: 'Qur’an Circle', when: 'Evening, after Maghrib' },
+  { day: 'Tue', what: 'Sisters’ Halaqah', when: 'Evening, after Maghrib' },
+  { day: 'Wed', what: 'New Muslim Circle', when: 'Evening, after Isha' },
+  { day: 'Thu', what: 'Community Kitchen', when: 'Open table, all welcome' },
+  { day: 'Fri', what: 'Jumu‘ah Khutbah', when: 'Two congregations, midday' },
+  { day: 'Sat', what: 'Qur’an & Arabic School', when: 'Children’s classes, morning' },
+  { day: 'Sun', what: 'Qur’an School & Food Bank', when: 'Adult classes & distribution' },
+];
+---
+
+<section id="rhythm" class="border-y border-maroon/10 bg-cream-warm/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8">
+    <div class="max-w-xl">
+      <p class="font-body text-[12.5px] font-bold uppercase tracking-[0.2em] text-gold-deep">The weekly rhythm</p>
+      <h2 class="mt-4 font-display text-[2.1rem] font-medium leading-[1.12] tracking-[-0.01em] text-maroon sm:text-[2.5rem]">
+        Seven days, never an empty room.
+      </h2>
+    </div>
+
+    <ol class="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-maroon/10 bg-maroon/10 sm:grid-cols-7">
+      {week.map((item) => (
+        <li class="group flex flex-col justify-between gap-4 bg-cream px-5 py-7 transition-colors duration-300 hover:bg-white">
+          <div class="flex items-center justify-between">
+            <span class="font-display text-[15px] font-semibold uppercase tracking-wide text-maroon">{item.day}</span>
+            <Star class="h-1.5 w-1.5 text-gold opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+          </div>
+          <div>
+            <p class="font-body text-[14.5px] font-semibold leading-snug text-ink">{item.what}</p>
+            <p class="mt-1.5 font-body text-[12px] leading-snug text-ink/55">{item.when}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <p class="mt-6 font-body text-[13px] text-ink/45">
+      Times are confirmed on the noticeboard in the lobby and announced after each prayer.
+    </p>
+  </div>
+</section>

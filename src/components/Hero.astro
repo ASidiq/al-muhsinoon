@@ -1,0 +1,71 @@
+---
+import Star from './Star.astro';
+---
+
+<section id="top" class="relative overflow-hidden">
+  <div
+    class="grain absolute inset-0"
+    style="background:
+      radial-gradient(680px 480px at 85% -10%, rgba(229,148,107,0.35), transparent 65%),
+      radial-gradient(620px 460px at 10% 110%, rgba(196,154,69,0.28), transparent 60%),
+      linear-gradient(180deg, #FBF3E7 0%, #F1E4CC 100%);"
+  ></div>
+
+  <img
+    src="/brand/crescent-star.png"
+    alt=""
+    aria-hidden="true"
+    class="pointer-events-none absolute -right-24 top-12 h-[420px] w-[420px] opacity-[0.07] sm:h-[520px] sm:w-[520px]"
+  />
+
+  <div class="relative mx-auto max-w-6xl px-6 pb-16 pt-16 sm:px-8 sm:pt-24 lg:pt-28">
+    <div class="max-w-2xl">
+      <p class="flex items-center gap-3 font-arabic text-[28px] text-gold-deep" dir="rtl">
+        المحسنين
+        <span class="font-body text-[11px] font-bold uppercase tracking-[0.22em] text-ink/50" dir="ltr">— "those who do good"</span>
+      </p>
+
+      <h1 class="mt-5 font-display text-[2.6rem] font-medium leading-[1.06] tracking-[-0.02em] text-maroon sm:text-[3.4rem] lg:text-[4rem]">
+        A home for faith, learning and service in Manchester.
+      </h1>
+
+      <p class="mt-6 max-w-xl font-body text-[17px] leading-[1.7] text-ink/75">
+        Al-Muhsinoon takes its name from the Qur'an's call to <em class="not-italic font-semibold text-maroon">ihsan</em> — doing good with excellence. We open our doors for prayer, study and care, every day of the year.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href="#give"
+          class="focus-ring rounded-full bg-maroon px-7 py-3.5 font-body text-[15px] font-semibold text-cream shadow-lift transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0"
+        >
+          Give Sadaqah
+        </a>
+        <a
+          href="#visit"
+          class="focus-ring inline-flex items-center gap-2 rounded-full border border-maroon/25 px-7 py-3.5 font-body text-[15px] font-semibold text-maroon transition-colors duration-200 hover:border-maroon hover:bg-maroon/5"
+        >
+          Plan a visit
+          <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative border-t border-maroon/10 bg-cream/60">
+    <dl class="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-maroon/10 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8">
+      {[
+        { dt: 'Open daily', dd: 'Five daily prayers, doors open to all.' },
+        { dt: 'Jumuʻah', dd: 'Friday khutbah, weekly — see noticeboard for times.' },
+        { dt: 'Free to learn', dd: 'Qur’an & Arabic classes for children and adults.' },
+      ].map((item) => (
+        <div class="flex items-center gap-3 py-5 sm:px-7 sm:py-7">
+          <Star class="h-3 w-3 shrink-0 text-gold" />
+          <div>
+            <dt class="font-display text-[17px] font-medium text-maroon">{item.dt}</dt>
+            <dd class="mt-0.5 font-body text-[13.5px] text-ink/60">{item.dd}</dd>
+          </div>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

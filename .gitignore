@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+temporary screenshots/
+.env
+.env.*
+.claude/settings.local.json

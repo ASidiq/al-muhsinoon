@@ -1,0 +1,10 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+const octagram =
+  'polygon(50% 2%, 57.65% 31.52%, 83.94% 16.06%, 68.48% 42.35%, 98% 50%, 68.48% 57.65%, 83.94% 83.94%, 57.65% 68.48%, 50% 98%, 42.35% 68.48%, 16.06% 83.94%, 31.52% 57.65%, 2% 50%, 31.52% 42.35%, 16.06% 16.06%, 42.35% 31.52%)';
+---
+
+<span class={`inline-block ${className}`} style={`clip-path:${octagram};background-color:currentColor;`}></span>

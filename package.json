@@ -1,0 +1,30 @@
+{
+  "name": "al-muhsinoon",
+  "version": "1.0.0",
+  "description": "Al-Muhsinoon's Website",
+  "keywords": [
+    "al-muhsinoon",
+    "islamic",
+    "centre",
+    "charity",
+    "muslim"
+  ],
+  "license": "MIT",
+  "author": "Abubakr Olorunlambe abubakrolorunlambe@gmail.com",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.9.0",
+    "tailwindcss": "^4.1.0",
+    "@tailwindcss/vite": "^4.1.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.1.0"
+  }
+}

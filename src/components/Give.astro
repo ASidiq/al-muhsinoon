@@ -1,0 +1,61 @@
+---
+import Star from './Star.astro';
+
+const tiers = [
+  { amount: '£10', body: 'Feeds a family from the community kitchen for one evening.' },
+  { amount: '£30', body: 'Sponsors a week of Qur’an and Arabic classes for one child.' },
+  { amount: '£120', body: 'Covers a month of emergency hardship grants for one household.' },
+];
+---
+
+<section id="give" class="relative overflow-hidden py-20 sm:py-28">
+  <div
+    class="grain absolute inset-0"
+    style="background:
+      radial-gradient(560px 420px at 12% 10%, rgba(247,206,160,0.45), transparent 60%),
+      radial-gradient(640px 480px at 92% 90%, rgba(229,148,107,0.3), transparent 60%),
+      #FBF3E7;"
+  ></div>
+
+  <div class="relative mx-auto max-w-6xl px-6 sm:px-8">
+    <div class="max-w-xl">
+      <p class="font-body text-[12.5px] font-bold uppercase tracking-[0.2em] text-gold-deep">Sadaqah & zakat</p>
+      <h2 class="mt-4 font-display text-[2.1rem] font-medium leading-[1.12] tracking-[-0.01em] text-maroon sm:text-[2.5rem]">
+        What your gift can do.
+      </h2>
+      <p class="mt-5 font-body text-[15.5px] leading-[1.75] text-ink/65">
+        Every gift stays local — to the kitchen, the classroom, and the families who ask us for help.
+      </p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3">
+      {tiers.map((tier, i) => (
+        <div class={`group relative rounded-xl border p-8 shadow-soft transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-lift ${i === 1 ? 'border-gold/50 bg-sand/15' : 'border-maroon/10 bg-white'}`}>
+          {i === 1 && (
+            <span class="absolute -top-3 left-8 rounded-full bg-gold-deep px-3 py-1 font-body text-[10.5px] font-bold uppercase tracking-[0.14em] text-cream">
+              Most given
+            </span>
+          )}
+          <Star class="h-3.5 w-3.5 text-gold" />
+          <p class="mt-5 font-display text-[2.4rem] font-medium text-maroon">{tier.amount}</p>
+          <p class="mt-3 font-body text-[14.5px] leading-[1.65] text-ink/65">{tier.body}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-14 flex flex-col items-center gap-5 rounded-2xl bg-maroon px-8 py-12 text-center shadow-lift sm:px-16">
+      <h3 class="font-display text-[1.6rem] font-medium text-cream sm:text-[1.9rem]">
+        Give once, or set up a regular gift.
+      </h3>
+      <p class="max-w-md font-body text-[14.5px] leading-[1.7] text-cream/70">
+        Sadaqah and zakat are both accepted — gift aid is reclaimed on every eligible donation.
+      </p>
+      <a
+        href="mailto:hello@al-muhsinoon.org?subject=Donation%20enquiry"
+        class="focus-ring mt-2 rounded-full bg-cream px-8 py-3.5 font-body text-[15px] font-semibold text-maroon transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lift active:translate-y-0"
+      >
+        Give Sadaqah
+      </a>
+    </div>
+  </div>
+</section>

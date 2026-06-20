@@ -1,0 +1,90 @@
+---
+const links = [
+  { href: '#mission', label: 'Our Mission' },
+  { href: '#programs', label: 'Programmes' },
+  { href: '#rhythm', label: 'Weekly Rhythm' },
+  { href: '#visit', label: 'Visit' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-maroon/10 bg-cream/90 backdrop-blur-sm">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 sm:px-8" aria-label="Primary">
+    <a href="#top" class="focus-ring shrink-0">
+      <img src="/brand/lockup-horizontal.png" alt="Al-Muhsinoon Islamic Cultural Centre" class="h-9 sm:h-10" />
+    </a>
+
+    <ul class="hidden items-center gap-8 font-body text-[15px] font-medium text-ink/80 lg:flex">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="focus-ring relative py-2 transition-colors duration-200 hover:text-maroon after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform after:duration-300 hover:after:scale-x-100"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-2 sm:gap-4">
+      <a
+        href="#give"
+        class="focus-ring shrink-0 rounded-full bg-maroon px-5 py-2.5 font-body text-sm font-semibold text-cream shadow-soft transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lift active:translate-y-0"
+      >
+        Give Sadaqah
+      </a>
+
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+        class="focus-ring relative flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-[5px] rounded-full border border-maroon/15 lg:hidden"
+      >
+        <span class="block h-px w-[18px] bg-maroon transition-transform duration-200" data-bar="top"></span>
+        <span class="block h-px w-[18px] bg-maroon transition-opacity duration-200" data-bar="mid"></span>
+        <span class="block h-px w-[18px] bg-maroon transition-transform duration-200" data-bar="bottom"></span>
+      </button>
+    </div>
+  </nav>
+
+  <ul
+    id="mobile-menu"
+    class="hidden flex-col gap-1 border-t border-maroon/10 bg-cream px-6 py-3 font-body text-[15px] font-medium text-ink/80 lg:hidden"
+  >
+    {links.map((link) => (
+      <li>
+        <a href={link.href} class="focus-ring block rounded-md px-2 py-2.5 transition-colors duration-200 hover:bg-maroon/5 hover:text-maroon">
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!open));
+    menu?.classList.toggle('hidden', open);
+    menu?.classList.toggle('flex', !open);
+    const [top, mid, bottom] = toggle.querySelectorAll('[data-bar]');
+    if (top && mid && bottom) {
+      top.style.transform = open ? '' : 'translateY(5px) rotate(45deg)';
+      bottom.style.transform = open ? '' : 'translateY(-5px) rotate(-45deg)';
+      mid.style.opacity = open ? '1' : '0';
+    }
+  });
+
+  menu?.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      toggle?.setAttribute('aria-expanded', 'false');
+      menu.classList.add('hidden');
+      menu.classList.remove('flex');
+    }
+  });
+</script>

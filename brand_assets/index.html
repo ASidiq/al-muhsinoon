@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Al-Muhsinoon — Logo Files</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500;600&family=Hanken+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;font-family:'Hanken Grotesk',sans-serif;background:#F1E8DA;color:#2A1518;padding:48px;}
+  h1{font-family:'Newsreader',serif;font-weight:600;font-size:34px;margin:0 0 4px;color:#5E1A24;}
+  .sub{color:#8a7a6a;font-size:14px;margin-bottom:36px;}
+  h2{font-family:'Newsreader',serif;font-weight:500;font-size:21px;color:#5E1A24;margin:38px 0 16px;border-bottom:1px solid #ddccb5;padding-bottom:8px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;}
+  .card{background:#fff;border:1px solid #e4d4ba;border-radius:6px;overflow:hidden;}
+  .swatch{height:150px;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;}
+  .light{background:#ffffff;}
+  .cream{background:#FBF3E7;}
+  .maroon{background:#5E1A24;}
+  .checker{background:conic-gradient(#eee 90deg,#fff 90deg 180deg,#eee 180deg 270deg,#fff 270deg) 0 0/20px 20px;}
+  .swatch img{max-width:100%;max-height:100%;display:block;}
+  .meta{padding:11px 14px;border-top:1px solid #eee;}
+  .fname{font-family:ui-monospace,monospace;font-size:12px;font-weight:600;color:#5E1A24;word-break:break-all;}
+  .fdesc{font-size:11.5px;color:#9a8a78;margin-top:3px;}
+  .icons{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+  .icoCell{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .icoCell .lbl{font-family:ui-monospace,monospace;font-size:11px;color:#9a8a78;}
+  pre{background:#2A1518;color:#f0ddc8;padding:18px 20px;border-radius:6px;font-size:12.5px;overflow:auto;line-height:1.6;}
+</style>
+</head>
+<body>
+  <h1>Al-Muhsinoon — Logo Files</h1>
+  <div class="sub">Transparent, production-ready PNGs for header, footer, social and favicons. Files live in the <code>export/</code> folder.</div>
+
+  <h2>Primary lockups</h2>
+  <div class="grid">
+    <div class="card"><div class="swatch light"><img src="lockup-horizontal.png"></div><div class="meta"><div class="fname">lockup-horizontal.png</div><div class="fdesc">Header lockup</div></div></div>
+    <div class="card"><div class="swatch light"><img src="lockup-stacked.png"></div><div class="meta"><div class="fname">lockup-stacked.png</div><div class="fdesc">Stacked lockup</div></div></div>
+  </div>
+
+  <h2>Emblem &amp; device</h2>
+  <div class="grid">
+    <div class="card"><div class="swatch checker"><img src="emblem.png"></div><div class="meta"><div class="fname">emblem.png</div><div class="fdesc">Symbol only · 1024px · transparent</div></div></div>
+    <div class="card"><div class="swatch checker"><img src="crescent-star.png"></div><div class="meta"><div class="fname">crescent-star.png</div><div class="fdesc">Crescent &amp; star device · transparent</div></div></div>
+    <div class="card"><div class="swatch cream"><img src="avatar-crescent-star.png" style="max-height:120px;"></div><div class="meta"><div class="fname">avatar-crescent-star.png</div><div class="fdesc">Circular avatar · 512px · social profiles</div></div></div>
+  </div>
+
+  <h2>Favicons &amp; app icons</h2>
+  <div class="card" style="padding:24px;">
+    <div class="icons">
+      <div class="icoCell"><img src="favicon-16.png" width="16" height="16"><div class="lbl">16</div></div>
+      <div class="icoCell"><img src="favicon-32.png" width="32" height="32"><div class="lbl">32</div></div>
+      <div class="icoCell"><img src="favicon-48.png" width="48" height="48"><div class="lbl">48</div></div>
+      <div class="icoCell"><img src="apple-touch-icon-180.png" width="76" height="76" style="border-radius:16px;"><div class="lbl">apple-touch · 180</div></div>
+      <div class="icoCell"><img src="icon-512-maskable.png" width="76" height="76"><div class="lbl">maskable · 512</div></div>
+    </div>
+  </div>
+
+  <h2>Social share image</h2>
+  <div class="grid">
+    <div class="card"><div class="swatch maroon" style="height:170px;"><img src="og-image.png" style="max-height:150px;border-radius:3px;"></div><div class="meta"><div class="fname">og-image.png</div><div class="fdesc">1200×630 · link preview for WhatsApp, Facebook, X</div></div></div>
+  </div>
+
+  <h2>Drop-in HTML</h2>
+  <pre>&lt;link rel="icon" href="/favicon.ico" sizes="any"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"&gt;
+&lt;link rel="apple-touch-icon" href="/apple-touch-icon-180.png"&gt;
+&lt;link rel="manifest" href="/site.webmanifest"&gt;
+&lt;meta name="theme-color" content="#5E1A24"&gt;
+
+&lt;!-- Social share preview --&gt;
+&lt;meta property="og:title" content="Al-Muhsinoon Islamic Cultural Centre"&gt;
+&lt;meta property="og:image" content="/og-image.png"&gt;
+&lt;meta name="twitter:card" content="summary_large_image"&gt;</pre>
+  <div class="fdesc" style="margin-top:10px;">Also saved as <code>head-snippet.txt</code> and <code>site.webmanifest</code>.</div>
+</body>
+</html>
