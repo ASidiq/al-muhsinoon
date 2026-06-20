@@ -16,15 +16,25 @@ npm run build    # outputs static site to ./dist
 npm run preview  # serve the production build locally
 ```
 
-## Deploying to Cloudflare Pages (via GitHub)
+## Deploying to Cloudflare Pages
 
-1. Push this repo to GitHub.
-2. In Cloudflare Pages, create a project connected to the GitHub repo.
-3. Build settings:
-   - **Framework preset:** Astro
-   - **Build command:** `npm run build`
-   - **Build output directory:** `dist`
-4. No adapter or functions are required — this is a fully static site.
+Deploys are handled by GitHub Actions (`.github/workflows/deploy.yml`), not Cloudflare's own Git integration — the Pages project is **direct-upload**, not connected to the GitHub repo, so the two don't both try to build the same push. The workflow creates the Pages project itself the first time it runs (checks the Cloudflare API for a project named `almuhsinoon`, creates it if missing), so there's no manual `wrangler pages project create` step.
+
+### One-time setup
+
+1. **Buy the domain** (Cloudflare Registrar → Register a Domain → search `almuhsinoon`, pick a TLD). Buying through Cloudflare adds it as a managed zone automatically.
+2. **Get an API token and account ID:**
+   - My Profile → API Tokens → Create Token → "Edit Cloudflare Workers" template, scoped to your account.
+   - Account ID is in the sidebar of any Workers & Pages page.
+3. **Add GitHub repo secrets** (Settings → Secrets and variables → Actions):
+   - `CLOUDFLARE_API_TOKEN`
+   - `CLOUDFLARE_ACCOUNT_ID`
+4. **Push to `main`** — the workflow creates the `almuhsinoon` Pages project (if it doesn't exist yet) and deploys to it in the same run.
+5. **Add the custom domain:** Workers & Pages → almuhsinoon → Custom domains → Add `almuhsinoon.org` (and `www` if wanted). DNS + SSL are configured automatically since the zone is already in Cloudflare.
+
+### Every push after that
+
+Pushing to `main` triggers the workflow: `npm ci` → `npm run build` → confirm/create the Pages project → `wrangler pages deploy dist --project-name=almuhsinoon`. No adapter or Pages Functions are needed — this is a fully static site.
 
 ## Project structure
 
