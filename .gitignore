@@ -6,3 +6,6 @@ temporary screenshots/
 .env
 .env.*
 .claude/settings.local.json
+
+# Private pre-launch notes (not for the public repo)
+TODO.md

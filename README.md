@@ -1,6 +1,6 @@
 # Al-Muhsinoon
 
-Landing page for Al-Muhsinoon Islamic Cultural Centre, Manchester — built with [Astro](https://astro.build) and Tailwind CSS v4.
+Website for Al-Muhsinoon Islamic Cultural Centre, Manchester — built with [Astro](https://astro.build) and Tailwind CSS v4. The site is two pages: a landing page (`/`) and a Programmes page (`/programmes`) that uses React for an interactive photo selector/carousel — see [Project structure](#project-structure).
 
 ## Development
 
@@ -38,15 +38,23 @@ Pushing to `main` triggers the workflow: `npm ci` → `npm run build` → confir
 
 ## Project structure
 
-- `src/pages/index.astro` — the page, assembled from section components in `src/components/`
+- `src/pages/index.astro` — the landing page, assembled from section components in `src/components/`
+- `src/pages/programmes/index.astro` — the Programmes page: full write-up and photo galleries for every programme
+- `src/data/programmes.ts` — single source of truth for programme copy, icons, and image paths; imported by both the landing page's teaser cards (`src/components/Programs.astro`) and the Programmes page
+- `src/components/ProgrammesExplorer.tsx` + `src/components/ui/interactive-selector.tsx` + `src/components/ui/carousel.tsx` — the React island powering the Programmes page (see "React & shadcn" below)
 - `src/layouts/Layout.astro` — HTML shell: meta tags, favicons, OG/Twitter card, fonts
 - `src/styles/global.css` — Tailwind import + design tokens (colors, fonts, shadows) under `@theme`
+- `public/programmes/<slug>/` — curated, web-sized (max ~1600px, resized via macOS `sips`) photos for each programme; paths are referenced directly in `src/data/programmes.ts`
 - `public/` — favicons, manifest, OG image, and brand lockups (copied from `brand_assets/`)
 - `brand_assets/` — source brand guidelines and exported logo files (not deployed; reference only)
 
+## React & shadcn
+
+This is otherwise a fully static Astro + Tailwind site with no JS framework. The Programmes page is the one exception: it uses `@astrojs/react` plus two React components installed via the [shadcn](https://ui.shadcn.com) CLI (an image-fan "Interactive Selector" for switching programmes, and an Ark UI–based `Carousel` for browsing each programme's photos), restyled to the site's brand tokens in `src/components/ui/`. Only that page ships the React bundle (`client:load` on `<ProgrammesExplorer />`) — the landing page stays framework-free.
+
 ## Content notes
 
-Visit details (address, opening hours) and the weekly programme times in `src/components/Rhythm.astro` and `src/components/Visit.astro` are written as honest placeholders — update them with the centre's real schedule and contact details before launch.
+- Visit details (address, opening hours) and the weekly programme times in `src/components/Rhythm.astro` and `src/components/Visit.astro` are written as honest placeholders — update them with the centre's real schedule and contact details before launch.
 
 ## Screenshot workflow
 
@@ -54,6 +62,10 @@ Visit details (address, opening hours) and the weekly programme times in `src/co
 
 ```sh
 node screenshot.mjs http://localhost:4321/ label
+node screenshot.mjs http://localhost:4321/ label --width=390 --height=844   # mobile viewport
+node screenshot.mjs http://localhost:4321/ label --scroll-to=programs       # jump to a section id first
 ```
+
+Note: the dev server's React Fast Refresh transform has a known intermittent `Missing field 'moduleType'` error in this Astro/Vite version that can make `/programmes` render blank during `npm run dev`. It doesn't affect the production build — if you hit it, verify against `npm run build && npm run preview` instead.
 
 See `.claude/skills/preview-and-screenshot-astro-site/SKILL.md` for the full workflow (section-specific screenshots, viewports, a scroll-behavior gotcha).
