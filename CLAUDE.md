@@ -18,10 +18,16 @@
 - `public/` holds favicons, manifest, OG image, and logo files copied from `brand_assets/` — these are what actually ship.
 - Build with `npm run build` → `dist/`. Deploys to Cloudflare Pages via GitHub (build command `npm run build`, output directory `dist`, no adapter).
 - `npm run dev` / `npm run build` / `npm run preview` are the only scripts — don't reach for `node serve.mjs` or a CDN Tailwind script in this project.
+- Mostly framework-free, but **React + shadcn are installed** for interactive islands (the `/programmes` page). When adding any React/shadcn/21st.dev component, use the `add-react-island` skill — it covers the setup, the brand-restyle gotchas, and the dev-mode bug that makes you verify via `npm run build && npm run preview` instead of `npm run dev`.
 
 ## Keeping README.md Current
 - Whenever a change affects how someone would build, run, deploy, or understand this site — new scripts, a changed dev port, a new dependency, a restructured `src/` or `public/`, new deploy settings, or new placeholder content that needs real data before launch — update `README.md` in the same change, not as a follow-up.
 - Specifically keep these README sections in sync: Development/Build commands, Deploying to Cloudflare Pages, Project structure, and Content notes (placeholder copy that still needs the client's real details).
+
+## End of Session — Capture Reusable Skills
+- Before wrapping up substantial work, ask whether the session produced a **repeatable procedure that was non-obvious to derive** — a multi-step setup, a workflow with a specific command sequence, or hard-won gotchas. If so, capture it as a project skill in `.claude/skills/<name>/SKILL.md` so the next session doesn't re-solve it from scratch.
+- Only extract what clears the bar: it took real trial-and-error, it's likely to recur, and it isn't already obvious from the code or README. Skip one-offs and anything the repo already records.
+- One focused skill beats several thin ones — fold small gotchas into a related skill rather than making a skill per fact. Match the existing format: YAML frontmatter (`name`, plus a `description` that says *when* to use it) then a concise how-to. Model it on `.claude/skills/preview-and-screenshot-astro-site/SKILL.md`.
 
 ## Output Defaults
 - This project overrides the generic default below: see **Stack**.

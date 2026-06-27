@@ -1,31 +1,5 @@
 ---
-const programs = [
-  {
-    letter: 'ا',
-    title: 'Daily & Jumu‘ah Prayers',
-    body: 'Congregational prayers held five times a day, with a Friday khutbah open to the whole community.',
-  },
-  {
-    letter: 'ب',
-    title: 'Qur’an & Arabic School',
-    body: 'Weekend classes for children and adults, from first letters and tajweed through to confident reading.',
-  },
-  {
-    letter: 'ج',
-    title: 'Zakat & Sadaqah Support',
-    body: 'Zakat collected and distributed within the local community — food parcels and emergency hardship grants.',
-  },
-  {
-    letter: 'د',
-    title: 'Community Welfare',
-    body: 'Befriending for elders, guidance for new Muslims, and support with funeral (janazah) arrangements.',
-  },
-  {
-    letter: 'ه',
-    title: 'Youth & Family',
-    body: 'Halaqahs, school holiday clubs, and guidance for marriage (nikah) — for every stage of family life.',
-  },
-];
+import { programmes } from '../data/programmes';
 ---
 
 <section id="programs" class="py-20 sm:py-28">
@@ -34,29 +8,67 @@ const programs = [
       <div class="lg:sticky lg:top-28 lg:self-start">
         <p class="font-body text-[12.5px] font-bold uppercase tracking-[0.2em] text-gold-deep">What happens here</p>
         <h2 class="mt-4 font-display text-[2.1rem] font-medium leading-[1.12] tracking-[-0.01em] text-maroon sm:text-[2.5rem]">
-          Five days a week, the centre is in use.
+          Eight programmes, one community.
         </h2>
         <p class="mt-5 max-w-md font-body text-[15.5px] leading-[1.75] text-ink/65">
-          Every programme is run by volunteers from the community, for the community — and every one of them is free to attend.
+          From Friday prayers to family days out, every programme is run by volunteers from the community, for the community — and every one of them is free to attend.
         </p>
+        <a
+          href="/programmes"
+          class="focus-ring mt-6 inline-flex items-center gap-2 font-body text-[14.5px] font-semibold text-maroon transition-[gap,color] duration-200 ease-out hover:gap-3 hover:text-maroon-dark"
+        >
+          See every programme
+          <span aria-hidden="true">→</span>
+        </a>
       </div>
 
-      <ul class="divide-y divide-maroon/10 border-y border-maroon/10">
-        {programs.map((program) => (
-          <li class="group flex gap-6 py-7 sm:gap-9">
-            <span
-              class="font-arabic flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold/30 bg-sand/15 text-[1.4rem] text-maroon transition-colors duration-300 group-hover:border-gold group-hover:bg-gold/15"
-              aria-hidden="true"
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        {programmes.map((programme) => {
+          const Icon = programme.icon;
+          const heroImage = programme.gallery[0];
+
+          return (
+            <a
+              href={`/programmes#${programme.slug}`}
+              class="focus-ring group flex flex-col overflow-hidden rounded-xl border border-maroon/10 bg-white shadow-soft transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:shadow-lift"
             >
-              {program.letter}
-            </span>
-            <div>
-              <h3 class="font-display text-[1.25rem] font-medium text-maroon">{program.title}</h3>
-              <p class="mt-2 max-w-lg font-body text-[15px] leading-[1.7] text-ink/65">{program.body}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div class="relative aspect-[4/3] w-full overflow-hidden bg-maroon-dark">
+                {heroImage ? (
+                  <>
+                    <img
+                      src={heroImage.src}
+                      alt=""
+                      aria-hidden="true"
+                      loading="lazy"
+                      decoding="async"
+                      class="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl brightness-[0.55]"
+                    />
+                    <img
+                      src={heroImage.src}
+                      alt={heroImage.alt}
+                      loading="lazy"
+                      decoding="async"
+                      class="relative h-full w-full object-contain transition-transform duration-500 ease-out group-hover:scale-105"
+                    />
+                  </>
+                ) : (
+                  <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-maroon to-maroon-dark">
+                    <Icon className="h-9 w-9 text-gold" aria-hidden="true" />
+                  </div>
+                )}
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-maroon-dark/80 via-maroon-dark/10 to-transparent mix-blend-multiply"
+                  aria-hidden="true"
+                />
+              </div>
+              <div class="flex flex-1 flex-col gap-2 p-5">
+                <h3 class="font-display text-[1.05rem] font-medium text-maroon">{programme.title}</h3>
+                <p class="font-body text-[13.5px] leading-[1.6] text-ink/65">{programme.summary}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   </div>
 </section>
