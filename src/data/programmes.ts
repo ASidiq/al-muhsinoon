@@ -5,6 +5,7 @@ import {
   FaBookQuran,
   FaHandHoldingDollar,
   FaHandHoldingHeart,
+  FaKaaba,
   FaMoon,
   FaMosque,
   FaRing,
@@ -86,6 +87,35 @@ export const programmes: Programme[] = [
       {
         src: "/programmes/eid-prayer/eid-prayer-05.jpg",
         alt: "Group of women in colourful Eid attire, 2017",
+      },
+    ],
+  },
+  {
+    slug: "hajj-and-umrah",
+    title: "Hajj & Umrah",
+    summary: "Travelling to Makkah together — children and elders side by side.",
+    body: "Al-Muhsinoon travels to the Holy Land as a community, supporting members through Umrah and the rites of Hajj. Our groups are deliberately intergenerational — grandparents making the journey of a lifetime, parents, and children young enough to be making their first, standing together in ihram at the Kaaba and on the plains of Arafat. Everyone is welcome: first-time pilgrims are supported with preparation and guidance through each rite, and nobody travels alone. Our gallery is from the 2022 group.",
+    icon: FaKaaba,
+    gallery: [
+      {
+        src: "/programmes/hajj-and-umrah/hajj-and-umrah-01.jpg",
+        alt: "Three generations of the Al-Muhsinoon group gathered inside Masjid al-Haram, Hajj & Umrah 2022",
+      },
+      {
+        src: "/programmes/hajj-and-umrah/hajj-and-umrah-02.jpg",
+        alt: "Fathers and sons in ihram together in Makkah, Hajj & Umrah 2022",
+      },
+      {
+        src: "/programmes/hajj-and-umrah/hajj-and-umrah-03.jpg",
+        alt: "Pilgrims of all ages in front of the Kaaba, Hajj & Umrah 2022",
+      },
+      {
+        src: "/programmes/hajj-and-umrah/hajj-and-umrah-04.jpg",
+        alt: "Group in Al-Muhsinoon-branded caps outside the Haram, Hajj & Umrah 2022",
+      },
+      {
+        src: "/programmes/hajj-and-umrah/hajj-and-umrah-05.jpg",
+        alt: "Pilgrims at Jabal al-Rahmah on the plain of Arafat, Hajj & Umrah 2022",
       },
     ],
   },
