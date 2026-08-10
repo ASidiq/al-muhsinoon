@@ -57,7 +57,7 @@ This is otherwise a fully static Astro + Tailwind site with no JS framework. The
 
 ## Content notes
 
-- The Upcoming page currently carries one event, Walimatul Qur'an (12 September 2026). Its details are transcribed from the printed invitation in `Al-Muhsinoon_Content/Upcomings/`; the venue postcode reads `BI3 5EL` on the artwork and is set as `BL3 5EL` on the site — confirm with the centre. When the event passes, replace or remove the page rather than leaving it stale.
+- The Upcoming page carries one event: the 10th Year Anniversary & First Walimatul Qur'an (Sat 12 September 2026, 11:00am, The Memory Hall, Bolton). The date, venue, graduand names and enquiry contacts are transcribed from the event flyers in `Al-Muhsinoon_Content/Upcomings/`; the venue postcode reads `BI3 5EL` on the artwork and is set as `BL3 5EL` on the site — worth confirming with the centre. The page assumes one event at a time — when this one passes, replace it rather than leaving it stale.
 - Visit details (address, opening hours) and the weekly programme times in `src/components/Rhythm.astro` and `src/components/Visit.astro` are written as honest placeholders — update them with the centre's real schedule and contact details before launch.
 
 ## Screenshot workflow

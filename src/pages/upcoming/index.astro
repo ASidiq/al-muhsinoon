@@ -2,98 +2,293 @@
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-import StarDivider from '../../components/StarDivider.astro';
+import Star from '../../components/Star.astro';
 
-// Details taken from the printed invitation in brand content — do not edit without a source.
-const event = {
-  title: "Walimatul Qur'an",
-  subtitle: 'and a decade of service to the community',
-  date: 'Saturday 12 September 2026',
-  time: '11:00am',
-  venue: 'The Memory Hall, Gilnow Lane, Bolton, Greater Manchester BL3 5EL',
-  contact: ['07476 601701', '07477 006500'],
-};
-
-const gallery = [
-  { src: '/upcoming/walimatul-quran-save-the-date.jpg', alt: 'Save the date artwork for Walimatul Qur’an, 12 September 2026' },
-  { src: '/upcoming/walimatul-quran-graduands.jpg', alt: 'The graduands being celebrated at Walimatul Qur’an' },
+// Details transcribed from the event flyers in Al-Muhsinoon_Content/Upcomings — do not edit without a source.
+const graduands = [
+  'Abdul Adil Albath',
+  'Amirah Izuagie',
+  'Muyideen Abdul Hannan Albath',
+  'Erum Yisa',
+  'Aisha Issah Aigbedion',
+  'Iklas Opeyemi Abdul',
+  'Hajarat Kola Balogun',
+  'Nabella Yisa',
+  'Miss Aliyat Garuba',
 ];
+
+const enquiries = [
+  { name: 'Imam Munir Ajikanle Hussein', tel: '07476601701' },
+  { name: 'Alhaja Muibat Ajikanle Hussein', tel: '07477006500' },
+];
+
+const emails = ['munir.hussein@almuhsinoon.co.uk', 'ajikanleimam@yahoo.co.uk'];
+
+const recentlyHeld = [
+  {
+    slug: 'eid-prayer',
+    src: '/programmes/eid-prayer/eid-prayer-01.jpg',
+    alt: 'Imam addressing the congregation at Eid Prayer 2019',
+    eyebrow: 'Eid Prayer',
+    title: 'Congregation and celebration',
+    short: 'Eid Prayer',
+  },
+  {
+    slug: 'lectures-ramadan-bayaan',
+    src: '/programmes/lectures-ramadan-bayaan/lectures-ramadan-bayaan-02.jpg',
+    alt: 'Guest speaker addressing the hall during a Ramadan lecture, 2017',
+    eyebrow: 'Lectures',
+    title: 'Annual Ramadan Bayaan',
+    short: 'Ramadan Bayaan',
+  },
+  {
+    slug: 'minding-and-mending',
+    src: '/programmes/minding-and-mending/minding-and-mending-03.jpg',
+    alt: 'Family day trip group at Gulliver’s World',
+    eyebrow: 'Minding & Mending',
+    title: 'Family day out',
+    short: 'Family day',
+  },
+];
+
+const tagClass =
+  'rounded-full border border-gold/60 bg-sand/30 px-3 py-[5px] font-body text-[10px] font-bold uppercase tracking-[0.14em] text-gold-deep sm:text-[10.5px] sm:px-[13px]';
+const dtClass = 'font-body text-[10.5px] font-bold uppercase tracking-[0.16em] text-ink/40';
+const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
 ---
 
 <Layout
   title="Upcoming — Al-Muhsinoon Islamic Cultural Centre"
-  description="What's next at Al-Muhsinoon: Walimatul Qur'an and a decade of service to the community, Saturday 12 September 2026 at The Memory Hall, Bolton."
+  description="What’s on at Al-Muhsinoon: the 10th Year Anniversary & First Walimatul Qur’an, Saturday 12 September 2026, 11:00am at The Memory Hall, Bolton. Open to all, free to attend."
 >
   <Nav />
   <main>
-    <section class="py-20 sm:py-28">
-      <div class="mx-auto max-w-6xl px-6 sm:px-8">
-        <div class="max-w-xl">
-          <p class="font-body text-[12.5px] font-bold uppercase tracking-[0.2em] text-gold-deep">What's next</p>
-          <h1 class="mt-4 font-display text-[2.1rem] font-medium leading-[1.12] tracking-[-0.01em] text-maroon sm:text-[2.5rem]">
-            Upcoming at the centre.
-          </h1>
-          <p class="mt-5 font-body text-[15.5px] leading-[1.75] text-ink/65">
-            Gatherings the whole community is invited to. Everyone is welcome — bring your family.
-          </p>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div
+        class="grain absolute inset-0"
+        style="background:radial-gradient(680px 420px at 88% -20%, rgba(229,148,107,0.32), transparent 65%), radial-gradient(520px 380px at 4% 120%, rgba(196,154,69,0.22), transparent 60%), linear-gradient(180deg,#FBF3E7 0%,#F6EBD8 100%)"
+      >
+      </div>
+      <div class="relative mx-auto max-w-6xl px-5 pb-[30px] pt-[34px] sm:px-8 sm:pb-14 sm:pt-[76px]">
+        <p class="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-gold-deep sm:text-[12.5px]">What’s on</p>
+        <h1
+          class="mt-2.5 max-w-[20ch] font-display text-[2.1rem] font-medium leading-[1.08] tracking-[-0.02em] text-maroon sm:mt-3.5 sm:text-[3.6rem] sm:leading-[1.05]"
+        >
+          Upcoming at the centre.
+        </h1>
+        <p class="mt-3.5 max-w-[46ch] font-body text-[15px] leading-[1.7] text-ink/70 sm:hidden">
+          Open to all, free to attend, announced as confirmed.
+        </p>
+        <p class="mt-[22px] hidden max-w-[46ch] font-body text-[17px] leading-[1.7] text-ink/70 sm:block">
+          Gatherings, lectures and community days, announced as they are confirmed. Everything here is open to all — no
+          booking, no charge.
+        </p>
+      </div>
+    </section>
+
+    <!-- The event -->
+    <section class="mx-auto max-w-6xl px-5 pt-[26px] sm:px-8 sm:pt-15">
+      <div class="flex items-center gap-3.5 sm:gap-5">
+        <h2 class="font-display text-[1.2rem] font-medium text-maroon sm:text-[1.5rem]">September</h2>
+        <span class="font-body text-[11px] font-bold tracking-[0.16em] text-ink/35 sm:text-[12px]">2026</span>
+        <span class="h-px flex-1 bg-gold/45"></span>
+      </div>
+
+      <article class="pt-[22px] sm:grid sm:grid-cols-[132px_minmax(0,1fr)] sm:items-start sm:gap-10 sm:pb-11 sm:pt-10">
+        <!-- Date: inline on mobile, its own column from sm -->
+        <div class="flex items-baseline gap-3.5 sm:block">
+          <p class="font-display text-[3rem] font-medium leading-[0.9] tracking-[-0.03em] text-maroon sm:hidden">12</p>
+          <p class="font-body text-[12px] font-bold uppercase tracking-[0.16em] text-gold-deep sm:hidden">Sat · September</p>
+
+          <div class="hidden sm:block">
+            <p class="font-body text-[11.5px] font-bold uppercase tracking-[0.18em] text-gold-deep">Sat</p>
+            <p class="mt-0.5 font-display text-[4.6rem] font-medium leading-[0.92] tracking-[-0.03em] text-maroon">12</p>
+            <p class="mt-2 font-body text-[13px] font-semibold text-ink/55">September</p>
+            <div class="mt-[18px] flex items-center gap-2">
+              <Star class="h-2 w-2 text-gold" />
+              <span class="h-px flex-1 bg-gold/45"></span>
+            </div>
+          </div>
         </div>
 
-        <article class="mt-14 grid gap-10 rounded-2xl bg-cream-warm/40 p-6 shadow-soft sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-14">
-          <div class="relative overflow-hidden rounded-xl">
+        <div>
+          <div class="mt-[18px] flex flex-wrap gap-2 sm:mt-0">
+            <span class={tagClass}>Madrasa</span>
+            <span class={tagClass}>Whole centre</span>
+          </div>
+
+          <h3
+            class="mt-3.5 max-w-[24ch] font-display text-[1.85rem] font-medium leading-[1.12] tracking-[-0.02em] text-maroon sm:mt-4 sm:text-[3rem] sm:leading-[1.08]"
+          >
+            10th Year Anniversary &amp; First Walimatul Qur’an
+          </h3>
+
+          <p class="mt-3.5 max-w-[60ch] font-body text-[15px] leading-[1.7] text-ink/70 sm:mt-5 sm:text-[17px] sm:leading-[1.75]">
+            Walimatul Qur’an and a decade of service to the community. Our first cohort of graduands is honoured before
+            the community, alongside ten years of Al-Muhsinoon in Manchester. Led by
+            <strong class="font-semibold text-maroon">Imam Munir Ajikanle Hussein</strong>, Amir and Founder.
+          </p>
+
+          <div class="mt-5 overflow-hidden rounded-[11px] bg-maroon-dark shadow-lift sm:mt-8 sm:rounded-xl">
             <img
-              src="/upcoming/walimatul-quran-invitation.jpg"
-              alt={`Invitation to ${event.title}, ${event.date} at ${event.venue}`}
-              width="1320"
-              height="1400"
+              src="/upcoming/walimatul-quran-save-the-date.jpg"
+              alt="10th Year Anniversary and First Walimatul Qur’an — save the date, 12th September 2026"
+              width="1400"
+              height="986"
               class="block w-full"
               loading="eager"
             />
-            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-maroon-dark/25 to-transparent"></div>
           </div>
 
-          <div>
-            <p class="font-body text-[12.5px] font-bold uppercase tracking-[0.2em] text-gold-deep">Next gathering</p>
-            <h2 class="mt-3 font-display text-[1.9rem] font-medium leading-[1.15] tracking-[-0.01em] text-maroon sm:text-[2.2rem]">
-              {event.title}
-            </h2>
-            <p class="mt-2 font-body text-[15.5px] leading-[1.7] text-ink/70">{event.subtitle}</p>
+          <dl
+            class="mt-5 grid gap-px overflow-hidden rounded-[10px] border border-maroon/12 bg-maroon/12 sm:mt-7 sm:grid-cols-3"
+          >
+            <div class="flex justify-between gap-[18px] bg-cream px-[18px] py-4 sm:block sm:px-[22px] sm:py-5">
+              <dt class={dtClass}>Date</dt>
+              <dd class={`m-0 text-right sm:mt-2 sm:text-left ${ddClass}`}>
+                <span class="sm:hidden">Sat 12 September 2026</span>
+                <span class="hidden sm:inline">Saturday 12 September 2026</span>
+              </dd>
+            </div>
+            <div class="flex justify-between gap-[18px] bg-cream px-[18px] py-4 sm:block sm:px-[22px] sm:py-5">
+              <dt class={dtClass}>Time</dt>
+              <dd class={`m-0 sm:mt-2 ${ddClass}`}>11:00am</dd>
+            </div>
+            <div class="bg-cream px-[18px] py-4 sm:px-[22px] sm:py-5">
+              <dt class={dtClass}>Venue</dt>
+              <dd class={`mt-2 leading-[1.4] sm:leading-[1.35] ${ddClass}`}>
+                The Memory Hall, Gilnow Lane, Bolton, Greater Manchester BL3 5EL
+              </dd>
+            </div>
+          </dl>
 
-            <dl class="mt-8 space-y-4 border-t border-maroon/10 pt-8 font-body text-[15px] leading-[1.7]">
-              <div class="flex gap-4">
-                <dt class="w-20 shrink-0 text-[12.5px] font-bold uppercase tracking-[0.14em] text-ink/45">When</dt>
-                <dd class="text-ink/80">{event.date}, {event.time}</dd>
-              </div>
-              <div class="flex gap-4">
-                <dt class="w-20 shrink-0 text-[12.5px] font-bold uppercase tracking-[0.14em] text-ink/45">Where</dt>
-                <dd class="text-ink/80">{event.venue}</dd>
-              </div>
-              <div class="flex gap-4">
-                <dt class="w-20 shrink-0 text-[12.5px] font-bold uppercase tracking-[0.14em] text-ink/45">Ask</dt>
-                <dd class="text-ink/80">
-                  {event.contact.map((number, i) => (
+          <div class="mt-[22px] border-l border-gold/50 py-0.5 pl-[18px] sm:mt-7 sm:pl-[22px]">
+            <p class="font-body text-[10.5px] font-bold uppercase tracking-[0.16em] text-gold-deep sm:text-[11px]">
+              For all enquiries
+            </p>
+            <ul class="mt-3.5 flex flex-col gap-3.5 sm:gap-3">
+              {enquiries.map((person) => (
+                <li class="font-body text-[14.5px] leading-[1.6] sm:flex sm:gap-[18px] sm:text-[15px]">
+                  <span class="block font-semibold text-maroon sm:w-[250px] sm:flex-none">{person.name}</span>
+                  <a
+                    href={`tel:${person.tel}`}
+                    class="focus-ring mt-[3px] block text-[14px] text-ink/70 transition-colors duration-200 hover:text-maroon sm:mt-0 sm:text-[15px]"
+                  >
+                    {person.tel}
+                  </a>
+                </li>
+              ))}
+              <li class="font-body text-[14.5px] leading-[1.6] sm:flex sm:gap-[18px] sm:text-[15px]">
+                <span class="block font-semibold text-maroon sm:w-[250px] sm:flex-none">Email</span>
+                <span class="mt-[3px] block text-[14px] leading-[1.6] text-ink/70 sm:mt-0 sm:text-[15px]">
+                  {emails.map((email, i) => (
                     <>
-                      {i > 0 && <span class="text-ink/35"> · </span>}
-                      <a href={`tel:${number.replace(/\s/g, '')}`} class="focus-ring transition-colors duration-200 hover:text-maroon">
-                        {number}
+                      {i > 0 && (
+                        <>
+                          <br class="sm:hidden" />
+                          <span class="hidden sm:inline"> · </span>
+                        </>
+                      )}
+                      <a href={`mailto:${email}`} class="focus-ring transition-colors duration-200 hover:text-maroon">
+                        {email}
                       </a>
                     </>
                   ))}
-                </dd>
-              </div>
-            </dl>
+                </span>
+              </li>
+            </ul>
           </div>
-        </article>
-
-        <StarDivider class="my-16" />
-
-        <div class="grid items-start gap-6 sm:grid-cols-2">
-          {gallery.map((image) => (
-            <figure class="relative overflow-hidden rounded-xl shadow-soft">
-              <img src={image.src} alt={image.alt} class="block w-full" loading="lazy" />
-              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-maroon-dark/30 to-transparent"></div>
-            </figure>
-          ))}
         </div>
+      </article>
+    </section>
+
+    <!-- Graduands -->
+    <section class="mt-[30px] border-y border-maroon/10 bg-cream-warm/60 sm:mt-0">
+      <div
+        class="mx-auto grid max-w-6xl items-start gap-7 px-5 py-7 sm:grid-cols-[minmax(0,1fr)_360px] sm:gap-12 sm:px-8 sm:py-13"
+      >
+        <div>
+          <p class="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-gold-deep sm:text-[12.5px]">
+            Faces of the 2026 graduands
+          </p>
+          <h2
+            class="mt-3 font-display text-[1.5rem] font-medium leading-[1.2] text-maroon sm:mt-3.5 sm:text-[2rem] sm:leading-[1.15] sm:tracking-[-0.01em]"
+          >
+            Nine names, read out on the day.
+          </h2>
+
+          <!-- Poster leads on mobile, sits beside the list from sm -->
+          <div class="mt-[18px] overflow-hidden rounded-[11px] border border-maroon/12 sm:hidden">
+            <img
+              src="/upcoming/walimatul-quran-graduands.jpg"
+              alt="Faces of the 2026 graduands poster"
+              width="961"
+              height="1600"
+              class="block w-full"
+              loading="lazy"
+            />
+          </div>
+
+          <ul
+            class="mt-[18px] grid gap-px overflow-hidden rounded-[10px] border border-maroon/12 bg-maroon/12 sm:mt-6 sm:grid-cols-3"
+          >
+            {graduands.map((name) => (
+              <li class="flex items-center gap-3 bg-cream px-4 py-[13px] sm:px-5 sm:py-[18px]">
+                <Star class="h-[7px] w-[7px] flex-none text-gold sm:h-2 sm:w-2" />
+                <span class="font-body text-[14px] font-semibold leading-[1.35] text-ink sm:text-[14.5px]">{name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="hidden overflow-hidden rounded-xl border border-maroon/12 bg-cream shadow-soft sm:block">
+          <img
+            src="/upcoming/walimatul-quran-graduands.jpg"
+            alt="Faces of the 2026 graduands poster"
+            width="961"
+            height="1600"
+            class="block w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Recently held -->
+    <section class="mx-auto max-w-6xl px-5 pb-8 pt-[26px] sm:px-8 sm:pb-18 sm:pt-14">
+      <div class="flex items-baseline justify-between">
+        <h2 class="font-display text-[1.2rem] font-medium text-maroon sm:text-[1.5rem]">Recently held</h2>
+        <a
+          href="/programmes"
+          class="focus-ring hidden font-body text-sm font-semibold text-maroon transition-colors duration-200 hover:text-maroon-dark sm:inline"
+        >
+          All programme galleries →
+        </a>
+      </div>
+
+      <div class="mt-3.5 grid grid-cols-3 gap-3 sm:mt-[22px] sm:gap-5">
+        {recentlyHeld.map((item) => (
+          <a href={`/programmes#${item.slug}`} class="focus-ring group block">
+            <div class="relative aspect-square overflow-hidden rounded-lg bg-maroon-dark sm:aspect-[3/2] sm:rounded-[10px]">
+              <img
+                src={item.src}
+                alt={item.alt}
+                class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                loading="lazy"
+              />
+              <div
+                class="pointer-events-none absolute inset-0 bg-gradient-to-t from-maroon-dark/70 to-transparent to-60% mix-blend-multiply"
+              >
+              </div>
+            </div>
+            <p class="mt-2 font-body text-[12.5px] font-semibold text-maroon sm:hidden">{item.short}</p>
+            <p class="mt-3 hidden font-body text-[11px] font-bold uppercase tracking-[0.16em] text-gold-deep sm:block">
+              {item.eyebrow}
+            </p>
+            <p class="mt-[5px] hidden font-display text-[1.05rem] font-medium text-maroon sm:block">{item.title}</p>
+          </a>
+        ))}
       </div>
     </section>
   </main>
