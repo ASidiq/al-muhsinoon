@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import StarDivider from '../../components/StarDivider.astro';
+
+// Details taken from the printed invitation in brand content — do not edit without a source.
+const event = {
+  title: "Walimatul Qur'an",
+  subtitle: 'and a decade of service to the community',
+  date: 'Saturday 12 September 2026',
+  time: '11:00am',
+  venue: 'The Memory Hall, Gilnow Lane, Bolton, Greater Manchester BL3 5EL',
+  contact: ['07476 601701', '07477 006500'],
+};
+
+const gallery = [
+  { src: '/upcoming/walimatul-quran-save-the-date.jpg', alt: 'Save the date artwork for Walimatul Qur’an, 12 September 2026' },
+  { src: '/upcoming/walimatul-quran-graduands.jpg', alt: 'The graduands being celebrated at Walimatul Qur’an' },
+];
+---
+
+<Layout
+  title="Upcoming — Al-Muhsinoon Islamic Cultural Centre"
+  description="What's next at Al-Muhsinoon: Walimatul Qur'an and a decade of service to the community, Saturday 12 September 2026 at The Memory Hall, Bolton."
+>
+  <Nav />
+  <main>
+    <section class="py-20 sm:py-28">
+      <div class="mx-auto max-w-6xl px-6 sm:px-8">
+        <div class="max-w-xl">
+          <p class="font-body text-[12.5px] font-bold uppercase tracking-[0.2em] text-gold-deep">What's next</p>
+          <h1 class="mt-4 font-display text-[2.1rem] font-medium leading-[1.12] tracking-[-0.01em] text-maroon sm:text-[2.5rem]">
+            Upcoming at the centre.
+          </h1>
+          <p class="mt-5 font-body text-[15.5px] leading-[1.75] text-ink/65">
+            Gatherings the whole community is invited to. Everyone is welcome — bring your family.
+          </p>
+        </div>
+
+        <article class="mt-14 grid gap-10 rounded-2xl bg-cream-warm/40 p-6 shadow-soft sm:p-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-center lg:gap-14">
+          <div class="relative overflow-hidden rounded-xl">
+            <img
+              src="/upcoming/walimatul-quran-invitation.jpg"
+              alt={`Invitation to ${event.title}, ${event.date} at ${event.venue}`}
+              width="1320"
+              height="1400"
+              class="block w-full"
+              loading="eager"
+            />
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-maroon-dark/25 to-transparent"></div>
+          </div>
+
+          <div>
+            <p class="font-body text-[12.5px] font-bold uppercase tracking-[0.2em] text-gold-deep">Next gathering</p>
+            <h2 class="mt-3 font-display text-[1.9rem] font-medium leading-[1.15] tracking-[-0.01em] text-maroon sm:text-[2.2rem]">
+              {event.title}
+            </h2>
+            <p class="mt-2 font-body text-[15.5px] leading-[1.7] text-ink/70">{event.subtitle}</p>
+
+            <dl class="mt-8 space-y-4 border-t border-maroon/10 pt-8 font-body text-[15px] leading-[1.7]">
+              <div class="flex gap-4">
+                <dt class="w-20 shrink-0 text-[12.5px] font-bold uppercase tracking-[0.14em] text-ink/45">When</dt>
+                <dd class="text-ink/80">{event.date}, {event.time}</dd>
+              </div>
+              <div class="flex gap-4">
+                <dt class="w-20 shrink-0 text-[12.5px] font-bold uppercase tracking-[0.14em] text-ink/45">Where</dt>
+                <dd class="text-ink/80">{event.venue}</dd>
+              </div>
+              <div class="flex gap-4">
+                <dt class="w-20 shrink-0 text-[12.5px] font-bold uppercase tracking-[0.14em] text-ink/45">Ask</dt>
+                <dd class="text-ink/80">
+                  {event.contact.map((number, i) => (
+                    <>
+                      {i > 0 && <span class="text-ink/35"> · </span>}
+                      <a href={`tel:${number.replace(/\s/g, '')}`} class="focus-ring transition-colors duration-200 hover:text-maroon">
+                        {number}
+                      </a>
+                    </>
+                  ))}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </article>
+
+        <StarDivider class="my-16" />
+
+        <div class="grid items-start gap-6 sm:grid-cols-2">
+          {gallery.map((image) => (
+            <figure class="relative overflow-hidden rounded-xl shadow-soft">
+              <img src={image.src} alt={image.alt} class="block w-full" loading="lazy" />
+              <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-maroon-dark/30 to-transparent"></div>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

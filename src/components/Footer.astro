@@ -1,11 +1,8 @@
 ---
-const links = [
-  { href: '#mission', label: 'Our Mission' },
-  { href: '#programs', label: 'Programmes' },
-  { href: '#rhythm', label: 'Weekly Rhythm' },
-  { href: '#visit', label: 'Visit' },
-  { href: '#give', label: 'Give Sadaqah' },
-];
+import { navLinks, giveLink, isActive } from '../data/nav';
+
+const pathname = Astro.url.pathname;
+const links = [...navLinks, giveLink];
 ---
 
 <footer class="bg-maroon-dark text-cream/70">
@@ -19,11 +16,20 @@ const links = [
       </div>
 
       <ul class="flex flex-wrap gap-x-8 gap-y-3 font-body text-[14px]">
-        {links.map((link) => (
-          <li>
-            <a href={link.href} class="focus-ring transition-colors duration-200 hover:text-cream">{link.label}</a>
-          </li>
-        ))}
+        {links.map((link) => {
+          const active = isActive(link, pathname);
+          return (
+            <li>
+              <a
+                href={link.href}
+                aria-current={active ? 'page' : undefined}
+                class:list={['focus-ring transition-colors duration-200 hover:text-cream', active && 'text-cream']}
+              >
+                {link.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
 

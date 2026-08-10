@@ -1,6 +1,6 @@
 # Al-Muhsinoon
 
-Website for Al-Muhsinoon Islamic Cultural Centre, Manchester — built with [Astro](https://astro.build) and Tailwind CSS v4. The site is two pages: a landing page (`/`) and a Programmes page (`/programmes`) that uses React for an interactive photo selector/carousel — see [Project structure](#project-structure).
+Website for Al-Muhsinoon Islamic Cultural Centre, Manchester — built with [Astro](https://astro.build) and Tailwind CSS v4. The site is three pages: a landing page (`/`), a Programmes page (`/programmes`) that uses React for an interactive photo selector/carousel, and an Upcoming page (`/upcoming`) listing the next community gathering — see [Project structure](#project-structure).
 
 ## Development
 
@@ -40,11 +40,14 @@ Pushing to `main` triggers the workflow: `npm ci` → `npm run build` → confir
 
 - `src/pages/index.astro` — the landing page, assembled from section components in `src/components/`
 - `src/pages/programmes/index.astro` — the Programmes page: full write-up and photo galleries for every programme
+- `src/pages/upcoming/index.astro` — the Upcoming page: the next community gathering, with its invitation and promo artwork
+- `src/data/nav.ts` — single source of truth for the primary nav links (and the active-page rule), imported by both `Nav.astro` and `Footer.astro`
 - `src/data/programmes.ts` — single source of truth for programme copy, icons, and image paths; imported by both the landing page's teaser cards (`src/components/Programs.astro`) and the Programmes page
 - `src/components/ProgrammesExplorer.tsx` + `src/components/ui/interactive-selector.tsx` + `src/components/ui/carousel.tsx` — the React island powering the Programmes page (see "React & shadcn" below)
 - `src/layouts/Layout.astro` — HTML shell: meta tags, favicons, OG/Twitter card, fonts
 - `src/styles/global.css` — Tailwind import + design tokens (colors, fonts, shadows) under `@theme`
 - `public/programmes/<slug>/` — curated, web-sized (max ~1600px, resized via macOS `sips`) photos for each programme; paths are referenced directly in `src/data/programmes.ts`
+- `public/upcoming/` — web-sized (max ~1400px, resized via macOS `sips`) event artwork referenced by the Upcoming page
 - `public/` — favicons, manifest, OG image, and brand lockups (copied from `brand_assets/`)
 - `brand_assets/` — source brand guidelines and exported logo files (not deployed; reference only)
 
@@ -54,6 +57,7 @@ This is otherwise a fully static Astro + Tailwind site with no JS framework. The
 
 ## Content notes
 
+- The Upcoming page currently carries one event, Walimatul Qur'an (12 September 2026). Its details are transcribed from the printed invitation in `Al-Muhsinoon_Content/Upcomings/`; the venue postcode reads `BI3 5EL` on the artwork and is set as `BL3 5EL` on the site — confirm with the centre. When the event passes, replace or remove the page rather than leaving it stale.
 - Visit details (address, opening hours) and the weekly programme times in `src/components/Rhythm.astro` and `src/components/Visit.astro` are written as honest placeholders — update them with the centre's real schedule and contact details before launch.
 
 ## Screenshot workflow
