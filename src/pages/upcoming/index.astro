@@ -3,6 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import Star from '../../components/Star.astro';
+import { posterFor } from '../../data/upcoming';
+
+// Countdown poster for the week this build runs in; save-the-date outside the five-week run-up.
+const poster = posterFor(new Date());
 
 // Details transcribed from the event flyers in Al-Muhsinoon_Content/Upcomings — do not edit without a source.
 const graduands = [
@@ -130,12 +134,19 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
             <strong class="font-semibold text-maroon">Imam Munir Ajikanle Hussein</strong>, Amir and Founder.
           </p>
 
-          <div class="mt-5 overflow-hidden rounded-[11px] bg-maroon-dark shadow-lift sm:mt-8 sm:rounded-xl">
+          <div
+            id="event-poster"
+            class:list={[
+              'mt-5 overflow-hidden rounded-[11px] bg-maroon-dark shadow-lift sm:mt-8 sm:rounded-xl',
+              // the countdown posters are portrait — keep them from towering over the column
+              poster.height > poster.width && 'sm:mx-auto sm:max-w-[26rem]',
+            ]}
+          >
             <img
-              src="/upcoming/walimatul-quran-save-the-date.jpg"
-              alt="10th Year Anniversary and First Walimatul Qur’an — save the date, 12th September 2026"
-              width="1400"
-              height="986"
+              src={poster.src}
+              alt={poster.alt}
+              width={poster.width}
+              height={poster.height}
               class="block w-full"
               loading="eager"
             />
@@ -294,3 +305,29 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
   </main>
   <Footer />
 </Layout>
+
+<script>
+  // The poster baked in at build time is only right for the week the site was built in.
+  // Re-run the same selection against the visitor's clock so a refresh always shows the
+  // correct week — the build-time choice stays the no-JS fallback.
+  import { posterFor } from '../../data/upcoming';
+
+  const frame = document.getElementById('event-poster');
+  const img = frame?.querySelector('img');
+
+  if (frame && img) {
+    const poster = posterFor(new Date());
+
+    if (!img.src.endsWith(poster.src)) {
+      img.src = poster.src;
+      img.alt = poster.alt;
+      img.width = poster.width;
+      img.height = poster.height;
+
+      const portrait = poster.height > poster.width;
+      frame.classList.toggle('sm:mx-auto', portrait);
+      frame.classList.toggle('sm:max-w-[26rem]', portrait);
+    }
+  }
+</script>
+

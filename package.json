@@ -17,7 +17,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "node --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "@ark-ui/react": "^5.37.2",
