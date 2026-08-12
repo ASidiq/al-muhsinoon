@@ -3,6 +3,11 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
+  schedule:
+    # The Upcoming page's countdown poster is chosen at build time, so a site that
+    # isn't rebuilt goes stale. Rebuild daily through the run-up to an event.
+    - cron: "17 4 * * *"
+  workflow_dispatch:
 
 concurrency:
   group: pages-deploy
@@ -22,13 +27,16 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
         env:
           PUPPETEER_SKIP_DOWNLOAD: "true"
         run: npm ci
+
+      - name: Test
+        run: npm test
 
       - name: Build
         run: npm run build

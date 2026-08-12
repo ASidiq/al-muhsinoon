@@ -1,6 +1,6 @@
 # Al-Muhsinoon
 
-Website for Al-Muhsinoon Islamic Cultural Centre, Manchester — built with [Astro](https://astro.build) and Tailwind CSS v4. The site is two pages: a landing page (`/`) and a Programmes page (`/programmes`) that uses React for an interactive photo selector/carousel — see [Project structure](#project-structure).
+Website for Al-Muhsinoon Islamic Cultural Centre, Manchester — built with [Astro](https://astro.build) and Tailwind CSS v4. The site is three pages: a landing page (`/`), a Programmes page (`/programmes`) that uses React for an interactive photo selector/carousel, and an Upcoming page (`/upcoming`) listing the next community gathering — see [Project structure](#project-structure).
 
 ## Development
 
@@ -15,6 +15,14 @@ npm run dev      # http://localhost:4321
 npm run build    # outputs static site to ./dist
 npm run preview  # serve the production build locally
 ```
+
+## Tests
+
+```sh
+npm test         # node:test, run over tests/
+```
+
+Node runs the TypeScript directly (native type stripping, Node 22.18+), so there's no test-runner dependency. The one suite covers the Upcoming page's countdown-poster selection — see Content notes.
 
 ## Deploying to Cloudflare Pages
 
@@ -34,18 +42,27 @@ Deploys are handled by GitHub Actions (`.github/workflows/deploy.yml`), not Clou
 
 ### Every push after that
 
-Pushing to `main` triggers the workflow: `npm ci` → `npm run build` → confirm/create the Pages project → `wrangler pages deploy dist --project-name=almuhsinoon`. No adapter or Pages Functions are needed — this is a fully static site.
+Pushing to `main` triggers the workflow: `npm ci` → `npm test` → `npm run build` → confirm/create the Pages project → `wrangler pages deploy dist --project-name=almuhsinoon`. No adapter or Pages Functions are needed — this is a fully static site.
+
+### Scheduled rebuilds
+
+The workflow also runs on a daily cron (`17 4 * * *`, i.e. 04:17 UTC) and can be triggered by hand from the Actions tab (`workflow_dispatch`). This exists so the Upcoming page's countdown poster, which is baked in at build time, never goes more than a day stale in the published HTML — the page also corrects itself in the browser, but crawlers and link previews only see what was built. Two things to know: GitHub disables scheduled workflows in a repo with no activity for 60 days (a push re-enables them), and a scheduled run deploys whatever is on `main`, so `main` should always be in a deployable state.
 
 ## Project structure
 
 - `src/pages/index.astro` — the landing page, assembled from section components in `src/components/`
 - `src/pages/programmes/index.astro` — the Programmes page: full write-up and photo galleries for every programme
+- `src/pages/upcoming/index.astro` — the Upcoming page: the next community gathering, with its invitation and promo artwork
+- `src/data/upcoming.ts` — the next event's date and its poster set, plus `posterFor(now)`, which picks the countdown poster for the current week (tested in `tests/upcoming.test.ts`)
+- `src/data/nav.ts` — single source of truth for the primary nav links (and the active-page rule), imported by both `Nav.astro` and `Footer.astro`
 - `src/data/programmes.ts` — single source of truth for programme copy, icons, and image paths; imported by both the landing page's teaser cards (`src/components/Programs.astro`) and the Programmes page
 - `src/components/ProgrammesExplorer.tsx` + `src/components/ui/interactive-selector.tsx` + `src/components/ui/carousel.tsx` — the React island powering the Programmes page (see "React & shadcn" below)
 - `src/layouts/Layout.astro` — HTML shell: meta tags, favicons, OG/Twitter card, fonts
 - `src/styles/global.css` — Tailwind import + design tokens (colors, fonts, shadows) under `@theme`
 - `public/programmes/<slug>/` — curated, web-sized (max ~1600px, resized via macOS `sips`) photos for each programme; paths are referenced directly in `src/data/programmes.ts`
+- `public/upcoming/` — web-sized (max ~1400px, resized via macOS `sips`) event artwork: the save-the-date, the five weekly countdown posters, and the graduands poster
 - `public/` — favicons, manifest, OG image, and brand lockups (copied from `brand_assets/`)
+- `tests/` — `node:test` suites, kept out of `src/` so nothing test-related is scanned into the build
 - `brand_assets/` — source brand guidelines and exported logo files (not deployed; reference only)
 
 ## React & shadcn
@@ -54,6 +71,8 @@ This is otherwise a fully static Astro + Tailwind site with no JS framework. The
 
 ## Content notes
 
+- The Upcoming page carries one event: the 10th Year Anniversary & First Walimatul Qur'an (Sat 12 September 2026, 11:00am, The Memory Hall, Bolton). The date, venue, graduand names and enquiry contacts are transcribed from the event flyers in `Al-Muhsinoon_Content/Upcomings/`. The page assumes one event at a time — when this one passes, replace it rather than leaving it stale.
+- **The event poster changes week by week.** In the five weeks before the event the page shows the centre's matching countdown poster ("5 Weeks to go!" … "1 Week to go!"); outside that window — earlier than five weeks out, or once the event has passed — it falls back to the save-the-date artwork. `posterFor()` runs twice: once at build time (so the HTML is correct with JavaScript disabled) and again in the browser on every page load, against the visitor's own clock. That second pass is what keeps a refresh correct on a site that hasn't been rebuilt in weeks.
 - Visit details (address, opening hours) and the weekly programme times in `src/components/Rhythm.astro` and `src/components/Visit.astro` are written as honest placeholders — update them with the centre's real schedule and contact details before launch.
 
 ## Screenshot workflow
