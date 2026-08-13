@@ -55,19 +55,40 @@ The workflow also runs on a daily cron (`17 4 * * *`, i.e. 04:17 UTC) and can be
 - `src/pages/upcoming/index.astro` — the Upcoming page: the next community gathering, with its invitation and promo artwork
 - `src/data/upcoming.ts` — the next event's date and its poster set, plus `posterFor(now)`, which picks the countdown poster for the current week (tested in `tests/upcoming.test.ts`)
 - `src/data/nav.ts` — single source of truth for the primary nav links (and the active-page rule), imported by both `Nav.astro` and `Footer.astro`
-- `src/data/programmes.ts` — single source of truth for programme copy, icons, and image paths; imported by both the landing page's teaser cards (`src/components/Programs.astro`) and the Programmes page
+- `src/data/programmes.ts` — single source of truth for programme copy, icons, and photos; imported by both the landing page's teaser cards (`src/components/Programs.astro`) and the Programmes page. Photos are resolved through `programmePhoto()` (see [Images and caching](#images-and-caching))
 - `src/components/ProgrammesExplorer.tsx` + `src/components/ui/interactive-selector.tsx` + `src/components/ui/carousel.tsx` — the React island powering the Programmes page (see "React & shadcn" below)
 - `src/layouts/Layout.astro` — HTML shell: meta tags, favicons, OG/Twitter card, fonts
 - `src/styles/global.css` — Tailwind import + design tokens (colors, fonts, shadows) under `@theme`
-- `public/programmes/<slug>/` — curated, web-sized (max ~1600px, resized via macOS `sips`) photos for each programme; paths are referenced directly in `src/data/programmes.ts`
-- `public/upcoming/` — web-sized (max ~1400px, resized via macOS `sips`) event artwork: the save-the-date, the five weekly countdown posters, and the graduands poster
-- `public/` — favicons, manifest, OG image, and brand lockups (copied from `brand_assets/`)
+- `src/assets/programmes/<slug>/` — curated, web-sized (max ~1600px, resized via macOS `sips`) photos for each programme; resolved by `programmePhoto()` in `src/data/programmes.ts`
+- `src/assets/upcoming/` — web-sized (max ~1400px, resized via macOS `sips`) event artwork: the save-the-date, the five weekly countdown posters, and the graduands poster
+- `public/` — favicons, manifest, OG image, and brand lockups (copied from `brand_assets/`). **Content photography does not belong here** — see [Images and caching](#images-and-caching)
 - `tests/` — `node:test` suites, kept out of `src/` so nothing test-related is scanned into the build
 - `brand_assets/` — source brand guidelines and exported logo files (not deployed; reference only)
 
 ## React & shadcn
 
 This is otherwise a fully static Astro + Tailwind site with no JS framework. The Programmes page is the one exception: it uses `@astrojs/react` plus two React components installed via the [shadcn](https://ui.shadcn.com) CLI (an image-fan "Interactive Selector" for switching programmes, and an Ark UI–based `Carousel` for browsing each programme's photos), restyled to the site's brand tokens in `src/components/ui/`. Only that page ships the React bundle (`client:load` on `<ProgrammesExplorer />`) — the landing page stays framework-free.
+
+## Images and caching
+
+**Content photography lives in `src/assets/`, never `public/`.**
+
+Files in `public/` are copied to `dist/` byte-for-byte with their names untouched, so their URLs never change. Cloudflare Pages serves them with `cache-control: public, max-age=14400`, which means replacing a photo in place leaves visitors on the old one for up to four hours — the URL they cached is still the current URL. That is a real bug we hit, not a theoretical one.
+
+Images under `src/assets/` go through Astro's asset pipeline instead. The build fingerprints them with a content hash (`_astro/jummah-service-03.Bnu2A4k8.jpg`) and converts the Astro-rendered ones to WebP (~60% smaller). Change the file, the hash changes, the URL changes, and no browser can serve a stale copy.
+
+`public/` is reserved for files that need a fixed, predictable URL: favicons, `site.webmanifest`, the OG image, and the brand lockups.
+
+**Adding or replacing a photo:**
+
+1. Drop it in `src/assets/programmes/<slug>/` or `src/assets/upcoming/`.
+2. Reference it through the resolver, not a URL string — `programmePhoto('<slug>/<file>.jpg')` for programme photos, `posterAsset('<file>.jpg')` on the Upcoming page. Both throw at build time on a typo rather than shipping a broken `<img>`.
+3. In `.astro` files use `<Image src={...} />` from `astro:assets` so the image is optimised. The React island can't — it renders plain `<img>` from `photo.src`, which is still fingerprinted, just not converted.
+
+Two deliberate wrinkles:
+
+- `src/data/upcoming.ts` stores a bare **filename** (`file`), not a URL, because `tests/upcoming.test.ts` imports it under plain `node --test`, where Vite-only syntax like `import.meta.glob` would fail. `src/pages/upcoming/index.astro` maps filename → built URL.
+- That same page resolves **every** poster up front and passes the map to the client script on a `data-poster-urls` attribute. The script swaps posters at runtime and cannot run the image pipeline itself, so it can't derive a hashed URL on its own.
 
 ## Content notes
 

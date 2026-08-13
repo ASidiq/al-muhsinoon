@@ -1,3 +1,4 @@
+import type { ImageMetadata } from "astro"
 import type { IconType } from "react-icons"
 import {
   FaBaby,
@@ -11,8 +12,25 @@ import {
   FaRing,
 } from "react-icons/fa6"
 
+// Photos live in src/assets/ rather than public/ so the build fingerprints their
+// filenames (`_astro/eid-prayer-01.<hash>.jpg`). Replacing a photo changes the hash,
+// so the URL changes and no browser can serve a stale copy. public/ is reserved for
+// branding and other files that need a fixed, predictable URL.
+const photos = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/programmes/**/*.jpg",
+  { eager: true }
+)
+
+/** Resolve a path relative to `src/assets/programmes/` to its built image. */
+export function programmePhoto(path: string): ImageMetadata {
+  const module = photos[`../assets/programmes/${path}`]
+  if (!module) throw new Error(`No programme photo at src/assets/programmes/${path}`)
+  return module.default
+}
+
 export interface ProgrammeImage {
-  src: string
+  /** Astro/Vite image metadata — `.src` is the fingerprinted URL. */
+  photo: ImageMetadata
   alt: string
 }
 
@@ -35,15 +53,15 @@ export const programmes: Programme[] = [
     icon: FaMosque,
     gallery: [
       {
-        src: "/programmes/jummah-service/jummah-service-03.jpg",
+        photo: programmePhoto("jummah-service/jummah-service-03.jpg"),
         alt: "The Imam delivering the khutbah at the lectern beside the Al-Muhsinoon banner during a Jummah Service",
       },
       {
-        src: "/programmes/jummah-service/jummah-service-01.jpg",
+        photo: programmePhoto("jummah-service/jummah-service-01.jpg"),
         alt: "Friday khutbah being delivered at the lectern, Jummah Service 2018",
       },
       {
-        src: "/programmes/jummah-service/jummah-service-02.jpg",
+        photo: programmePhoto("jummah-service/jummah-service-02.jpg"),
         alt: "Congregation gathered for Friday prayer, Jummah Service 2018",
       },
     ],
@@ -56,7 +74,7 @@ export const programmes: Programme[] = [
     icon: FaBookQuran,
     gallery: [
       {
-        src: "/programmes/madrasa/madrasa-01.jpg",
+        photo: programmePhoto("madrasa/madrasa-01.jpg"),
         alt: "Al-Muhsinoon Madrasa winter timetable",
       },
     ],
@@ -69,23 +87,23 @@ export const programmes: Programme[] = [
     icon: FaMoon,
     gallery: [
       {
-        src: "/programmes/eid-prayer/eid-prayer-01.jpg",
+        photo: programmePhoto("eid-prayer/eid-prayer-01.jpg"),
         alt: "Imam addressing the full congregation, Eid Prayer 2019",
       },
       {
-        src: "/programmes/eid-prayer/eid-prayer-02.jpg",
+        photo: programmePhoto("eid-prayer/eid-prayer-02.jpg"),
         alt: "Father and son making du'a together, Eid Prayer 2017",
       },
       {
-        src: "/programmes/eid-prayer/eid-prayer-03.jpg",
+        photo: programmePhoto("eid-prayer/eid-prayer-03.jpg"),
         alt: "Large community group photo under the Eid banner, 2018",
       },
       {
-        src: "/programmes/eid-prayer/eid-prayer-04.jpg",
+        photo: programmePhoto("eid-prayer/eid-prayer-04.jpg"),
         alt: "Two women smiling together, Eid Prayer 2018",
       },
       {
-        src: "/programmes/eid-prayer/eid-prayer-05.jpg",
+        photo: programmePhoto("eid-prayer/eid-prayer-05.jpg"),
         alt: "Group of women in colourful Eid attire, 2017",
       },
     ],
@@ -98,23 +116,23 @@ export const programmes: Programme[] = [
     icon: FaKaaba,
     gallery: [
       {
-        src: "/programmes/hajj-and-umrah/hajj-and-umrah-01.jpg",
+        photo: programmePhoto("hajj-and-umrah/hajj-and-umrah-01.jpg"),
         alt: "Three generations of the Al-Muhsinoon group gathered inside Masjid al-Haram, Hajj & Umrah 2022",
       },
       {
-        src: "/programmes/hajj-and-umrah/hajj-and-umrah-02.jpg",
+        photo: programmePhoto("hajj-and-umrah/hajj-and-umrah-02.jpg"),
         alt: "Fathers and sons in ihram together in Makkah, Hajj & Umrah 2022",
       },
       {
-        src: "/programmes/hajj-and-umrah/hajj-and-umrah-03.jpg",
+        photo: programmePhoto("hajj-and-umrah/hajj-and-umrah-03.jpg"),
         alt: "Pilgrims of all ages in front of the Kaaba, Hajj & Umrah 2022",
       },
       {
-        src: "/programmes/hajj-and-umrah/hajj-and-umrah-04.jpg",
+        photo: programmePhoto("hajj-and-umrah/hajj-and-umrah-04.jpg"),
         alt: "Group in Al-Muhsinoon-branded caps outside the Haram, Hajj & Umrah 2022",
       },
       {
-        src: "/programmes/hajj-and-umrah/hajj-and-umrah-05.jpg",
+        photo: programmePhoto("hajj-and-umrah/hajj-and-umrah-05.jpg"),
         alt: "Pilgrims at Jabal al-Rahmah on the plain of Arafat, Hajj & Umrah 2022",
       },
     ],
@@ -127,15 +145,15 @@ export const programmes: Programme[] = [
     icon: FaBookOpenReader,
     gallery: [
       {
-        src: "/programmes/lectures-ramadan-bayaan/lectures-ramadan-bayaan-01.jpg",
+        photo: programmePhoto("lectures-ramadan-bayaan/lectures-ramadan-bayaan-01.jpg"),
         alt: "Annual Ramadan Bayaan lecture flyer",
       },
       {
-        src: "/programmes/lectures-ramadan-bayaan/lectures-ramadan-bayaan-02.jpg",
+        photo: programmePhoto("lectures-ramadan-bayaan/lectures-ramadan-bayaan-02.jpg"),
         alt: "Guest speaker addressing the hall during a Ramadan lecture, 2017",
       },
       {
-        src: "/programmes/lectures-ramadan-bayaan/lectures-ramadan-bayaan-03.jpg",
+        photo: programmePhoto("lectures-ramadan-bayaan/lectures-ramadan-bayaan-03.jpg"),
         alt: "1438 AH Ramadan Lecture flyer, 2017",
       },
     ],
@@ -148,23 +166,23 @@ export const programmes: Programme[] = [
     icon: FaHandHoldingHeart,
     gallery: [
       {
-        src: "/programmes/minding-and-mending/minding-and-mending-01.jpg",
+        photo: programmePhoto("minding-and-mending/minding-and-mending-01.jpg"),
         alt: "Minding & Mending volunteer outreach team in branded orange, 2018",
       },
       {
-        src: "/programmes/minding-and-mending/minding-and-mending-02.jpg",
+        photo: programmePhoto("minding-and-mending/minding-and-mending-02.jpg"),
         alt: "Girls receiving their Minding & Mending certificates, 2018",
       },
       {
-        src: "/programmes/minding-and-mending/minding-and-mending-03.jpg",
+        photo: programmePhoto("minding-and-mending/minding-and-mending-03.jpg"),
         alt: "Family day trip group at Gulliver's World",
       },
       {
-        src: "/programmes/minding-and-mending/minding-and-mending-04.jpg",
+        photo: programmePhoto("minding-and-mending/minding-and-mending-04.jpg"),
         alt: "Volunteer sharing a warm moment with the coach driver, 2018",
       },
       {
-        src: "/programmes/minding-and-mending/minding-and-mending-05.jpg",
+        photo: programmePhoto("minding-and-mending/minding-and-mending-05.jpg"),
         alt: "Toddler in a branded Minding & Mending polo shirt, 2018",
       },
     ],
@@ -185,15 +203,15 @@ export const programmes: Programme[] = [
     icon: FaBaby,
     gallery: [
       {
-        src: "/programmes/aqeeqah-naming-ceremony/aqeeqah-naming-ceremony-01.jpg",
+        photo: programmePhoto("aqeeqah-naming-ceremony/aqeeqah-naming-ceremony-01.jpg"),
         alt: "Mother cradling newborn baby Amira at her naming ceremony",
       },
       {
-        src: "/programmes/aqeeqah-naming-ceremony/aqeeqah-naming-ceremony-02.jpg",
+        photo: programmePhoto("aqeeqah-naming-ceremony/aqeeqah-naming-ceremony-02.jpg"),
         alt: "Parents with baby Amira at the naming ceremony",
       },
       {
-        src: "/programmes/aqeeqah-naming-ceremony/aqeeqah-naming-ceremony-03.jpg",
+        photo: programmePhoto("aqeeqah-naming-ceremony/aqeeqah-naming-ceremony-03.jpg"),
         alt: "Naming ceremony moment under the banner for baby Amira",
       },
     ],
@@ -206,19 +224,19 @@ export const programmes: Programme[] = [
     icon: FaRing,
     gallery: [
       {
-        src: "/programmes/nikkah/nikkah-01.jpg",
+        photo: programmePhoto("nikkah/nikkah-01.jpg"),
         alt: "Signing the Al-Muhsinoon marriage certificate, Nikkah 2016",
       },
       {
-        src: "/programmes/nikkah/nikkah-02.jpg",
+        photo: programmePhoto("nikkah/nikkah-02.jpg"),
         alt: "The bride's side signing the marriage register, Nikkah 2016",
       },
       {
-        src: "/programmes/nikkah/nikkah-03.jpg",
+        photo: programmePhoto("nikkah/nikkah-03.jpg"),
         alt: "Guests in colourful attire at the Nikkah ceremony, 2016",
       },
       {
-        src: "/programmes/nikkah/nikkah-04.jpg",
+        photo: programmePhoto("nikkah/nikkah-04.jpg"),
         alt: "Wide shot of the high table at the Nikkah ceremony, 2016",
       },
     ],

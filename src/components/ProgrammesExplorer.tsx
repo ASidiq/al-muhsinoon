@@ -32,7 +32,7 @@ function ProgrammesExplorer() {
         slug: programme.slug,
         title: programme.title,
         description: programme.summary,
-        image: programme.gallery[0]?.src,
+        image: programme.gallery[0]?.photo.src,
         icon: <programme.icon aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" />,
       })),
     []
@@ -79,12 +79,12 @@ function ProgrammesExplorer() {
             <CarouselItemGroup className="h-full">
               {active.gallery.map((image, index) => (
                 <CarouselItem
-                  key={image.src}
+                  key={image.photo.src}
                   index={index}
                   className="relative h-full overflow-hidden bg-maroon-dark"
                 >
                   <img
-                    src={image.src}
+                    src={image.photo.src}
                     alt=""
                     aria-hidden="true"
                     loading="lazy"
@@ -92,7 +92,7 @@ function ProgrammesExplorer() {
                     className="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl brightness-[0.55]"
                   />
                   <img
-                    src={image.src}
+                    src={image.photo.src}
                     alt={image.alt}
                     loading="lazy"
                     decoding="async"
@@ -107,7 +107,7 @@ function ProgrammesExplorer() {
                 <CarouselNextTrigger />
                 <CarouselIndicatorGroup>
                   {active.gallery.map((image, index) => (
-                    <CarouselIndicator key={image.src} index={index} />
+                    <CarouselIndicator key={image.photo.src} index={index} />
                   ))}
                 </CarouselIndicatorGroup>
               </>

@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { programmes } from '../data/programmes';
 ---
 
@@ -35,16 +36,16 @@ import { programmes } from '../data/programmes';
               <div class="relative aspect-[4/3] w-full overflow-hidden bg-maroon-dark">
                 {heroImage ? (
                   <>
-                    <img
-                      src={heroImage.src}
+                    <Image
+                      src={heroImage.photo}
                       alt=""
                       aria-hidden="true"
                       loading="lazy"
                       decoding="async"
                       class="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl brightness-[0.55]"
                     />
-                    <img
-                      src={heroImage.src}
+                    <Image
+                      src={heroImage.photo}
                       alt={heroImage.alt}
                       loading="lazy"
                       decoding="async"

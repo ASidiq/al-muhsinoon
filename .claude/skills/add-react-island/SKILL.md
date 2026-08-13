@@ -34,8 +34,9 @@ Any pulled-in component arrives generic. Before using it:
 - Put shared content (copy, image paths, icons) in `src/data/*.ts` and import it into **both** the `.astro` page and the `.tsx` component, so copy isn't duplicated. See `src/data/programmes.ts`.
 - Two widgets that share selection state must be **one composite `.tsx` component** holding the state — separate islands can't share React state. See `src/components/ProgrammesExplorer.tsx` (selector + carousel + body copy in one).
 - Import the component into the `.astro` page and add a client directive: `<ProgrammesExplorer client:load />` for primary above-the-fold content, `client:visible` for below-the-fold. No directive = it renders static and won't be interactive.
-- Images shown by plain React `<img>` get **no** `astro:assets` optimisation. Resize/compress curated photos with macOS `sips` into `public/<area>/…` (no new dependency):
-  `sips -Z 1600 -s formatOptions 82 in.jpg --out public/programmes/<slug>/name.jpg`
+- Images shown by plain React `<img>` get **no** `astro:assets` optimisation (no WebP conversion) — but they are still fingerprinted, so put them in `src/assets/`, **not** `public/`, and pass `photo.src` from an `ImageMetadata` object. `public/` is unhashed, which strands visitors on a stale cached copy for hours when a photo is replaced. See "Images and caching" in `README.md`.
+- Resize/compress curated photos with macOS `sips` before committing (no new dependency):
+  `sips -Z 1600 -s formatOptions 82 in.jpg --out src/assets/programmes/<slug>/name.jpg`
 
 ## Verify (important)
 
