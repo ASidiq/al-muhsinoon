@@ -20,9 +20,9 @@ describe('daysUntilEvent', () => {
 
 describe('posterFor', () => {
   it('shows the save-the-date poster before the countdown starts', () => {
-    assert.equal(posterFor(before(36)).src, SAVE_THE_DATE.src);
-    assert.equal(posterFor(before(90)).src, SAVE_THE_DATE.src);
-    assert.equal(posterFor(new Date('2026-01-01T09:00:00Z')).src, SAVE_THE_DATE.src);
+    assert.equal(posterFor(before(36)).file, SAVE_THE_DATE.file);
+    assert.equal(posterFor(before(90)).file, SAVE_THE_DATE.file);
+    assert.equal(posterFor(new Date('2026-01-01T09:00:00Z')).file, SAVE_THE_DATE.file);
   });
 
   it('shows the matching countdown poster in each of the five weeks before', () => {
@@ -41,31 +41,31 @@ describe('posterFor', () => {
 
     for (const [days, weeks] of cases) {
       assert.equal(
-        posterFor(before(days)).src,
-        COUNTDOWN_POSTERS[weeks].src,
+        posterFor(before(days)).file,
+        COUNTDOWN_POSTERS[weeks].file,
         `${days} days out should show the ${weeks}-week poster`,
       );
     }
   });
 
   it('still shows the 1-week poster on the day of the event', () => {
-    assert.equal(posterFor(before(0)).src, COUNTDOWN_POSTERS[1].src);
-    assert.equal(posterFor(before(0, 23)).src, COUNTDOWN_POSTERS[1].src);
+    assert.equal(posterFor(before(0)).file, COUNTDOWN_POSTERS[1].file);
+    assert.equal(posterFor(before(0, 23)).file, COUNTDOWN_POSTERS[1].file);
   });
 
   it('falls back to the save-the-date poster once the event has passed', () => {
-    assert.equal(posterFor(before(-1)).src, SAVE_THE_DATE.src);
-    assert.equal(posterFor(before(-7)).src, SAVE_THE_DATE.src);
-    assert.equal(posterFor(new Date('2027-03-01T00:00:00Z')).src, SAVE_THE_DATE.src);
+    assert.equal(posterFor(before(-1)).file, SAVE_THE_DATE.file);
+    assert.equal(posterFor(before(-7)).file, SAVE_THE_DATE.file);
+    assert.equal(posterFor(new Date('2027-03-01T00:00:00Z')).file, SAVE_THE_DATE.file);
   });
 
   it('crosses each week boundary exactly once', () => {
     const seen = new Set<string>();
-    for (let days = 40; days >= -2; days--) seen.add(posterFor(before(days)).src);
+    for (let days = 40; days >= -2; days--) seen.add(posterFor(before(days)).file);
 
     assert.deepEqual(
       [...seen].sort(),
-      [SAVE_THE_DATE.src, ...Object.values(COUNTDOWN_POSTERS).map((p) => p.src)].sort(),
+      [SAVE_THE_DATE.file, ...Object.values(COUNTDOWN_POSTERS).map((p) => p.file)].sort(),
       'every poster should be reachable across the run-up',
     );
   });
@@ -74,7 +74,7 @@ describe('posterFor', () => {
     const eid = Date.UTC(2027, 2, 20);
     const twoWeeksBefore = new Date(eid - 14 * 86_400_000);
 
-    assert.equal(posterFor(twoWeeksBefore, eid).src, COUNTDOWN_POSTERS[2].src);
-    assert.equal(posterFor(new Date(eid + 86_400_000), eid).src, SAVE_THE_DATE.src);
+    assert.equal(posterFor(twoWeeksBefore, eid).file, COUNTDOWN_POSTERS[2].file);
+    assert.equal(posterFor(new Date(eid + 86_400_000), eid).file, SAVE_THE_DATE.file);
   });
 });

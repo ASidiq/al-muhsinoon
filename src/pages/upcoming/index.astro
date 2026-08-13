@@ -3,7 +3,32 @@ import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import Star from '../../components/Star.astro';
-import { posterFor } from '../../data/upcoming';
+import { Image, getImage } from 'astro:assets';
+import { COUNTDOWN_POSTERS, SAVE_THE_DATE, posterFor, type Poster } from '../../data/upcoming';
+import { programmePhoto } from '../../data/programmes';
+
+const posterAssets = import.meta.glob<{ default: ImageMetadata }>('../../assets/upcoming/*.jpg', {
+  eager: true,
+});
+
+/** Resolve a filename in src/assets/upcoming/ to its built image. */
+function posterAsset(file: string): ImageMetadata {
+  const module = posterAssets[`../../assets/upcoming/${file}`];
+  if (!module) throw new Error(`No poster at src/assets/upcoming/${file}`);
+  return module.default;
+}
+
+// The client script below can swap to any poster, so every one is resolved to its
+// fingerprinted URL here and handed over on a data attribute — the script can't run
+// the image pipeline itself.
+const posterUrls: Record<string, string> = Object.fromEntries(
+  await Promise.all(
+    [SAVE_THE_DATE, ...Object.values(COUNTDOWN_POSTERS)].map(async (p: Poster) => [
+      p.file,
+      (await getImage({ src: posterAsset(p.file), format: 'webp' })).src,
+    ])
+  )
+);
 
 // Countdown poster for the week this build runs in; save-the-date outside the five-week run-up.
 const poster = posterFor(new Date());
@@ -31,7 +56,7 @@ const emails = ['munir.hussein@almuhsinoon.co.uk', 'ajikanleimam@yahoo.co.uk'];
 const recentlyHeld = [
   {
     slug: 'eid-prayer',
-    src: '/programmes/eid-prayer/eid-prayer-01.jpg',
+    photo: programmePhoto('eid-prayer/eid-prayer-01.jpg'),
     alt: 'Imam addressing the congregation at Eid Prayer 2019',
     eyebrow: 'Eid Prayer',
     title: 'Congregation and celebration',
@@ -39,7 +64,7 @@ const recentlyHeld = [
   },
   {
     slug: 'lectures-ramadan-bayaan',
-    src: '/programmes/lectures-ramadan-bayaan/lectures-ramadan-bayaan-02.jpg',
+    photo: programmePhoto('lectures-ramadan-bayaan/lectures-ramadan-bayaan-02.jpg'),
     alt: 'Guest speaker addressing the hall during a Ramadan lecture, 2017',
     eyebrow: 'Lectures',
     title: 'Annual Ramadan Bayaan',
@@ -47,7 +72,7 @@ const recentlyHeld = [
   },
   {
     slug: 'minding-and-mending',
-    src: '/programmes/minding-and-mending/minding-and-mending-03.jpg',
+    photo: programmePhoto('minding-and-mending/minding-and-mending-03.jpg'),
     alt: 'Family day trip group at Gulliver’s World',
     eyebrow: 'Minding & Mending',
     title: 'Family day out',
@@ -136,6 +161,7 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
 
           <div
             id="event-poster"
+            data-poster-urls={JSON.stringify(posterUrls)}
             class:list={[
               'mt-5 overflow-hidden rounded-[11px] bg-maroon-dark shadow-lift sm:mt-8 sm:rounded-xl',
               // the countdown posters are portrait — keep them from towering over the column
@@ -143,7 +169,7 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
             ]}
           >
             <img
-              src={poster.src}
+              src={posterUrls[poster.file]}
               alt={poster.alt}
               width={poster.width}
               height={poster.height}
@@ -231,11 +257,9 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
 
           <!-- Poster leads on mobile, sits beside the list from sm -->
           <div class="mt-[18px] overflow-hidden rounded-[11px] border border-maroon/12 sm:hidden">
-            <img
-              src="/upcoming/walimatul-quran-graduands.jpg"
+            <Image
+              src={posterAsset('walimatul-quran-graduands.jpg')}
               alt="Faces of the 2026 graduands poster"
-              width="961"
-              height="1600"
               class="block w-full"
               loading="lazy"
             />
@@ -254,11 +278,9 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
         </div>
 
         <div class="hidden overflow-hidden rounded-xl border border-maroon/12 bg-cream shadow-soft sm:block">
-          <img
-            src="/upcoming/walimatul-quran-graduands.jpg"
+          <Image
+            src={posterAsset('walimatul-quran-graduands.jpg')}
             alt="Faces of the 2026 graduands poster"
-            width="961"
-            height="1600"
             class="block w-full"
             loading="lazy"
           />
@@ -282,8 +304,8 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
         {recentlyHeld.map((item) => (
           <a href={`/programmes#${item.slug}`} class="focus-ring group block">
             <div class="relative aspect-square overflow-hidden rounded-lg bg-maroon-dark sm:aspect-[3/2] sm:rounded-[10px]">
-              <img
-                src={item.src}
+              <Image
+                src={item.photo}
                 alt={item.alt}
                 class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                 loading="lazy"
@@ -317,9 +339,12 @@ const ddClass = 'font-display text-[1.05rem] text-maroon sm:text-[1.2rem]';
 
   if (frame && img) {
     const poster = posterFor(new Date());
+    // Built URLs are fingerprinted, so the page hands them over rather than us guessing.
+    const urls: Record<string, string> = JSON.parse(frame.dataset.posterUrls ?? '{}');
+    const url = urls[poster.file];
 
-    if (!img.src.endsWith(poster.src)) {
-      img.src = poster.src;
+    if (url && img.src !== new URL(url, location.href).href) {
+      img.src = url;
       img.alt = poster.alt;
       img.width = poster.width;
       img.height = poster.height;

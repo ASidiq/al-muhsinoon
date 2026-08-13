@@ -5,7 +5,10 @@
 // is built in, and falls back to the save-the-date artwork outside that window —
 // both before the countdown starts and after the event has passed.
 
-export type Poster = { src: string; alt: string; width: number; height: number };
+// `file` names an image in src/assets/upcoming/ — deliberately not a URL. The build
+// fingerprints those filenames, and this module stays free of Vite-only syntax so the
+// test suite can import it under plain `node --test`. The page resolves file → URL.
+export type Poster = { file: string; alt: string; width: number; height: number };
 
 export const EVENT_NAME = '10th Year Anniversary & First Walimatul Qur’an';
 
@@ -13,7 +16,7 @@ export const EVENT_NAME = '10th Year Anniversary & First Walimatul Qur’an';
 export const EVENT_DATE = Date.UTC(2026, 8, 12); // 12 September 2026
 
 export const SAVE_THE_DATE: Poster = {
-  src: '/upcoming/walimatul-quran-save-the-date.jpg',
+  file: 'walimatul-quran-save-the-date.jpg',
   alt: `${EVENT_NAME} — save the date, 12th September 2026`,
   width: 1400,
   height: 986,
@@ -31,7 +34,7 @@ export const COUNTDOWN_POSTERS: Record<number, Poster> = {
 function countdown(weeks: number): Poster {
   const label = weeks === 1 ? '1wk' : `${weeks}wks`;
   return {
-    src: `/upcoming/walimatul-quran-${label}-countdown.jpg`,
+    file: `walimatul-quran-${label}-countdown.jpg`,
     alt: `${EVENT_NAME} — ${weeks} ${weeks === 1 ? 'week' : 'weeks'} to go, 12th September 2026`,
     width: 989,
     height: 1400,
