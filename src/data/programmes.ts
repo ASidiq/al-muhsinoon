@@ -36,7 +36,7 @@ export const programmes: Programme[] = [
     gallery: [
       {
         src: "/programmes/jummah-service/jummah-service-03.jpg",
-        alt: "Guest speaker in traditional dress addressing the congregation at the lectern during a Jummah Service",
+        alt: "The Imam delivering the khutbah at the lectern beside the Al-Muhsinoon banner during a Jummah Service",
       },
       {
         src: "/programmes/jummah-service/jummah-service-01.jpg",

@@ -5,8 +5,8 @@ export type NavLink = { href: string; label: string; match?: string };
 export const navLinks: NavLink[] = [
   { href: '/#mission', label: 'Our Mission' },
   { href: '/programmes', label: 'Programmes', match: '/programmes' },
-  { href: '/upcoming', label: 'Upcoming', match: '/upcoming' },
   { href: '/#rhythm', label: 'Weekly Rhythm' },
+  { href: '/upcoming', label: 'Upcoming', match: '/upcoming' },
   { href: '/#visit', label: 'Visit' },
 ];
 
