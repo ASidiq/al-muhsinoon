@@ -22,7 +22,7 @@ npm run preview  # serve the production build locally
 npm test         # node:test, run over tests/
 ```
 
-Node runs the TypeScript directly (native type stripping, Node 22.18+), so there's no test-runner dependency. The one suite covers the Upcoming page's countdown-poster selection — see Content notes.
+Node runs the TypeScript directly (native type stripping, Node 22.18+), so there's no test-runner dependency. The suites cover the Upcoming page's countdown-poster selection and the Anniversary page's data (page wrap-around, alt text, graduand and award lists) — see Content notes.
 
 ## Deploying to Cloudflare Pages
 
@@ -53,6 +53,9 @@ The workflow also runs on a daily cron (`17 4 * * *`, i.e. 04:17 UTC) and can be
 - `src/pages/index.astro` — the landing page, assembled from section components in `src/components/`
 - `src/pages/programmes/index.astro` — the Programmes page: full write-up and photo galleries for every programme
 - `src/pages/upcoming/index.astro` — the Upcoming page: the next community gathering, with its invitation and promo artwork
+- `src/pages/anniversary/index.astro` — the 10th Anniversary & First Walimatul Qur'an special edition: magazine reader, PDF download, graduands, awardees, felicitations. Linked from the home page by `src/components/AnniversaryBand.astro` (between the Hero and Mission sections); not in the nav
+- `src/components/MagazineReader.astro` — the in-page magazine reader (a small vanilla client script, no React): prev/next, ← → keys, thumbnail strip, and `a[data-open-page]` links elsewhere on the page that jump to a page
+- `src/data/anniversary.ts` — the Anniversary page's content: page labels (alt text), graduands, awards, felicitations, the PDF path and the `SHOW_FROM_THE_DAY` flag (tested in `tests/anniversary.test.ts`). `src/lib/anniversary-assets.ts` resolves its filenames to built images
 - `src/data/upcoming.ts` — the next event's date and its poster set, plus `posterFor(now)`, which picks the countdown poster for the current week (tested in `tests/upcoming.test.ts`)
 - `src/data/nav.ts` — single source of truth for the primary nav links (and the active-page rule), imported by both `Nav.astro` and `Footer.astro`
 - `src/data/programmes.ts` — single source of truth for programme copy, icons, and photos; imported by both the landing page's teaser cards (`src/components/Programs.astro`) and the Programmes page. Photos are resolved through `programmePhoto()` (see [Images and caching](#images-and-caching))
@@ -61,6 +64,9 @@ The workflow also runs on a daily cron (`17 4 * * *`, i.e. 04:17 UTC) and can be
 - `src/styles/global.css` — Tailwind import + design tokens (colors, fonts, shadows) under `@theme`
 - `src/assets/programmes/<slug>/` — curated, web-sized (max ~1600px, resized via macOS `sips`) photos for each programme; resolved by `programmePhoto()` in `src/data/programmes.ts`
 - `src/assets/upcoming/` — web-sized (max ~1400px, resized via macOS `sips`) event artwork: the save-the-date, the five weekly countdown posters, and the graduands poster
+- `src/assets/magazine/` — the anniversary magazine, one image per page (`page-01.jpg` … `page-32.jpg`, 764×1080, rendered from the PDF)
+- `src/assets/anniversary/graduands/` — graduand portraits (`g-<slug>.jpg`, ~384px square, cropped from the magazine)
+- `public/magazine/al-muhsinoon-10th-anniversary.pdf` — the anniversary magazine PDF (~20 MB), in `public/` so it keeps a fixed, shareable URL. Cloudflare Pages caps files at 25 MB, so a heavier re-export must be compressed first
 - `public/` — favicons, manifest, OG image, and brand lockups (copied from `brand_assets/`). **Content photography does not belong here** — see [Images and caching](#images-and-caching)
 - `tests/` — `node:test` suites, kept out of `src/` so nothing test-related is scanned into the build
 - `brand_assets/` — source brand guidelines and exported logo files (not deployed; reference only)
@@ -77,12 +83,12 @@ Files in `public/` are copied to `dist/` byte-for-byte with their names untouche
 
 Images under `src/assets/` go through Astro's asset pipeline instead. The build fingerprints them with a content hash (`_astro/jummah-service-03.Bnu2A4k8.jpg`) and converts the Astro-rendered ones to WebP (~60% smaller). Change the file, the hash changes, the URL changes, and no browser can serve a stale copy.
 
-`public/` is reserved for files that need a fixed, predictable URL: favicons, `site.webmanifest`, the OG image, and the brand lockups.
+`public/` is reserved for files that need a fixed, predictable URL: favicons, `site.webmanifest`, the OG image, the brand lockups, and the anniversary magazine PDF.
 
 **Adding or replacing a photo:**
 
-1. Drop it in `src/assets/programmes/<slug>/` or `src/assets/upcoming/`.
-2. Reference it through the resolver, not a URL string — `programmePhoto('<slug>/<file>.jpg')` for programme photos, `posterAsset('<file>.jpg')` on the Upcoming page. Both throw at build time on a typo rather than shipping a broken `<img>`.
+1. Drop it in `src/assets/programmes/<slug>/`, `src/assets/upcoming/`, or (for the Anniversary page) `src/assets/magazine/` / `src/assets/anniversary/graduands/`.
+2. Reference it through the resolver, not a URL string — `programmePhoto('<slug>/<file>.jpg')` for programme photos, `posterAsset('<file>.jpg')` on the Upcoming page, `magazinePage(n)` / `graduandPhoto(slug)` for the Anniversary page. Both throw at build time on a typo rather than shipping a broken `<img>`.
 3. In `.astro` files use `<Image src={...} />` from `astro:assets` so the image is optimised. The React island can't — it renders plain `<img>` from `photo.src`, which is still fingerprinted, just not converted.
 
 Two deliberate wrinkles:
@@ -94,6 +100,9 @@ Two deliberate wrinkles:
 
 - The Upcoming page carries one event: the 10th Year Anniversary & First Walimatul Qur'an (Sat 12 September 2026, 11:00am, The Memory Hall, Bolton). The date, venue, graduand names and enquiry contacts are transcribed from the event flyers in `Al-Muhsinoon_Content/Upcomings/`. The page assumes one event at a time — when this one passes, replace it rather than leaving it stale.
 - **The event poster changes week by week.** In the five weeks before the event the page shows the centre's matching countdown poster ("5 Weeks to go!" … "1 Week to go!"); outside that window — earlier than five weeks out, or once the event has passed — it falls back to the save-the-date artwork. `posterFor()` runs twice: once at build time (so the HTML is correct with JavaScript disabled) and again in the browser on every page load, against the visitor's own clock. That second pass is what keeps a refresh correct on a site that hasn't been rebuilt in weeks.
+- **Anniversary page (`/anniversary`).** The awardee names are transcribed from page 24 of the magazine, with the client's corrections applied.
+- **"From the day" is built but hidden.** Set `SHOW_FROM_THE_DAY = true` in `src/data/anniversary.ts` once the photos and video from the event are ready, and replace the placeholder tiles in `src/pages/anniversary/index.astro` with the real media first.
+- To replace the magazine, swap the page images in `src/assets/magazine/` and the PDF in `public/magazine/`, then update `MAGAZINE_PAGE_COUNT` and `PAGE_LABELS` in `src/data/anniversary.ts`.
 - Visit details (address, opening hours) and the weekly programme times in `src/components/Rhythm.astro` and `src/components/Visit.astro` are written as honest placeholders — update them with the centre's real schedule and contact details before launch.
 
 ## Screenshot workflow

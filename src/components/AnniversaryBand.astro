@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import { BAND_FACES, GRADUANDS } from '../data/anniversary';
+import { graduandPhoto, magazinePage } from '../lib/anniversary-assets';
+
+const remaining = GRADUANDS.length - BAND_FACES.length;
+---
+
+<!-- Home page link into /anniversary — the whole band is the link. -->
+<a
+  href="/anniversary"
+  class="focus-ring group block border-y border-maroon/10 bg-cream-warm text-ink transition-colors duration-200 hover:bg-[#EEDFC4] focus-visible:outline-offset-[-3px]"
+>
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-8 px-6 py-10 sm:gap-10 sm:px-8">
+    <Image
+      src={magazinePage(1)}
+      alt="Anniversary magazine cover"
+      width={224}
+      class="block w-[112px] flex-none -rotate-3 rounded-[2px] shadow-[0_1px_2px_rgba(42,21,24,0.1),0_12px_28px_-10px_rgba(94,26,36,0.4)] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-rotate-1 group-active:scale-[0.98]"
+    />
+
+    <div class="min-w-0 flex-[1_1_380px]">
+      <p class="font-body text-[12px] font-bold uppercase tracking-[0.2em] text-gold-deep">Special Edition · 12 September 2026</p>
+      <p class="mt-2.5 text-balance font-display text-[26px] font-medium leading-[1.15] tracking-[-0.02em] text-maroon sm:text-[30px]">
+        Ten years of Al-Muhsinoon, and our first Walimatul Qur’an.
+      </p>
+      <p class="mt-2 font-body text-[15px] leading-[1.6] text-ink/70">
+        Read the anniversary magazine and meet the 2026 graduands.
+      </p>
+    </div>
+
+    <div class="flex flex-none flex-col items-start gap-4 sm:items-end">
+      <div class="flex pl-[10px]" aria-hidden="true">
+        {BAND_FACES.map((slug) => (
+          <Image
+            src={graduandPhoto(slug)}
+            alt=""
+            width={88}
+            height={88}
+            class="-ml-[10px] block h-11 w-11 rounded-full border-2 border-cream-warm object-cover"
+          />
+        ))}
+        <span
+          class="-ml-[10px] flex h-11 w-11 items-center justify-center rounded-full border-2 border-cream-warm bg-maroon font-body text-[12px] font-bold text-cream"
+        >
+          +{remaining}
+        </span>
+      </div>
+      <span
+        class="rounded-full bg-maroon px-[22px] py-[13px] font-body text-[15px] font-semibold text-cream shadow-[0_4px_14px_-4px_rgba(94,26,36,0.4)] transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-active:translate-y-0"
+      >
+        Read the special edition <span aria-hidden="true">→</span>
+      </span>
+    </div>
+  </div>
+</a>
